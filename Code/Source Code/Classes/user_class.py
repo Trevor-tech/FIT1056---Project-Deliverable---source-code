@@ -28,7 +28,8 @@ class User:
       bool: True if the user's credentials are valid, False otherwise.
     """
     return (identifier in [self.username, self.email] and 
-    self.password == password and self.role in ['student', 'staff'])
+    self.password == password and 
+    self.role in ['student', 'staff'])
 
 # Example usage
 user = User('john_doe', 'john@example.com', 'password123', 'student')
