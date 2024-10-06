@@ -1,4 +1,4 @@
-from user_class import User
+from Classes.user_class import User
 
 class Student(User):
     def __init__(self, username, email, password, student_ID):
@@ -11,4 +11,11 @@ class Student(User):
     def view_feedback(self):
         pass
 
-
+'''
+if __name__ == "__main__":      
+    student = Student("John Doe", "john.doe@example.com", "password123", "S001")
+    print(student.username)
+    print(student.email)
+    print(student.password)
+    print(student.student_ID)
+'''

@@ -1,4 +1,4 @@
-from course_class import Course
+from Classes.course_class import Course
 
 class Assignment(Course):
     def __init__(self, course_ID, course_name, assignment_ID, title, due_date):
@@ -12,3 +12,13 @@ class Assignment(Course):
 
     def submit(self):
         pass
+
+if __name__ == "__main__":
+    assignment = Assignment("C001", "Mathematics", "A001", "Assignment 1", "2024-01-01")
+    print(assignment.course_ID)
+    print(assignment.course_name)
+    print(assignment.assignment_ID)
+    print(assignment.title)
+    print(assignment.due_date)
+
+

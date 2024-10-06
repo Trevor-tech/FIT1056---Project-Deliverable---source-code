@@ -13,3 +13,12 @@ class Course:
 
     def add_asssignment(self):
         pass
+
+if __name__ == "__main__":
+    course = Course("C001", "Mathematics", "Introduction to Mathematics", "3")
+    print(course.course_ID)
+    print(course.course_name)
+    print(course.description)
+    print(course.credits)
+
+

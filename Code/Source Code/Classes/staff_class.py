@@ -1,4 +1,4 @@
-from user_class import User
+from Classes.user_class import User
 
 class Staff(User):
     def __init__(self, username, email, password, role, staff_type, staff_ID, salary, staff_info):
@@ -19,3 +19,14 @@ class Staff(User):
 
     def manage_course(self):
         pass
+
+if __name__ == "__main__":
+    staff = Staff("John Doe", "john.doe@example.com", "password123", "staff", "Teacher", "S001", 50000, "Teacher of Mathematics")
+    print(staff.username)
+    print(staff.email)
+    print(staff.password)
+    print(staff.role)
+    print(staff.staff_type)
+    print(staff.staff_ID)
+    print(staff.salary)
+    print(staff.staff_info)
