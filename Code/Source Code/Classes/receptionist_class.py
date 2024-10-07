@@ -42,10 +42,20 @@ class Receptionist(Staff):
         self.import_all_data()
     
     def import_all_data(self):
+        """
+        Import all data necesseary for latter.
+        """
         self.import_teachers_data()
         self.import_student_data()
     
     def import_teachers_data(self):
+        """
+        Import teachers' data.
+
+        Returns:
+        Bool -  True if import successfully, 
+                false otherwise
+        """
         self.teachers = []
         teachers_path = "./Data/teachers.txt"
         if os.path.exists(teachers_path):
@@ -62,13 +72,11 @@ class Receptionist(Staff):
 
     def import_students_data(self):
         """
-        Method to read students data and store it into the receptionist's session.
-
-        Parameter(s):
-        (None)
+        Import students' data.
 
         Returns:
-        (None)
+        Bool -  True if import successfully, 
+                false otherwise
         """
         self.students = []
         students_path = "./data/pst4_students.txt"
@@ -88,7 +96,6 @@ if __name__ == "__main__":
     print(receptionist.email)
     print(receptionist.password)
     print(receptionist.role)
-    print(receptionist.staff_type)
     print(receptionist.staff_ID)
     print(receptionist.salary)
     pass
