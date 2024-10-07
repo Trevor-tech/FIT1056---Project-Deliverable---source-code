@@ -11,10 +11,10 @@ sys.path.insert(0, parent_dir)
 
 import tkinter as tk
 from tkinter import messagebox
-from Classes.user_class import User 
-from Classes.student_class import Student
-from Classes.teacher_class import Teacher
-from Classes.receptionist_class import Receptionist
+from classes.user_class import User 
+from classes.student_class import Student
+from classes.teacher_class import Teacher
+from classes.receptionist_class import Receptionist
 import UI.student_page
 import UI.teacher_page
 import UI.receptionist_page
@@ -54,9 +54,10 @@ class HomePage:
 
     def login(self):
         username = self.username_var.get()
+        email = self.email_var.get()
         password = self.password_var.get()
 
-        user = self.authenticate(username, password)
+        user = Receptionist.authenticate(username, email, password)
 
         if user:
             # Check if login as receptionist.
@@ -71,6 +72,7 @@ class HomePage:
         else:
             self.error_label = tk.Label(self.frame, text="Invalid username or password", fg="red", font=("Arial", 10, "bold"))
             self.error_label.grid(row=3, column=0, columnspan=2, pady=5)
+
     def authenticate(self, username, password):
         data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'Data')
         
