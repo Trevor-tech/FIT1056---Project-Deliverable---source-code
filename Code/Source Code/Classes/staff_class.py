@@ -1,13 +1,18 @@
 import os
 from classes.receptionist_class import Receptionist
+from classes.teacher_class import Teacher
 from classes.user_class import User
 
 class Staff(User):
     
     @staticmethod
-    def authenticate():
-        if Receptionist.authenticate is isinstance:
-            pass
+    def authenticate(self, input_username_or_email, input_password):
+        if Receptionist.authenticate(input_username_or_email, input_password):
+            return True
+        elif Teacher.authenticate(input_username_or_email, input_password):
+            return True
+        else:
+            return False
         pass
 
     def __init__(self, username, email, password, role, staff_type, staff_ID, salary, staff_info):
