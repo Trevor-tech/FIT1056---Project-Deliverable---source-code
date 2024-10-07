@@ -1,6 +1,15 @@
+import os
+from classes.receptionist_class import Receptionist
 from classes.user_class import User
 
 class Staff(User):
+    
+    @staticmethod
+    def authenticate():
+        if Receptionist.authenticate is isinstance:
+            pass
+        pass
+
     def __init__(self, username, email, password, role, staff_type, staff_ID, salary, staff_info):
         super().__init__(username, email, password, role)
         self.staff_type = staff_type

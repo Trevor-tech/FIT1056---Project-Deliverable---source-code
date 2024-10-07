@@ -4,6 +4,7 @@ from classes.teacher_class import Teacher
 from classes.student_class import Student
 
 class Receptionist(Staff):
+    
     @staticmethod
     def authenticate(input_username_or_email, input_password):
         """

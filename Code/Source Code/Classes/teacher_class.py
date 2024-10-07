@@ -1,7 +1,37 @@
-
-from Classes.staff_class import Staff
+import os
+from classes.staff_class import Staff
 
 class Teacher(Staff):
+
+    @staticmethod
+    def authenticate(input_username_or_email, input_password):
+        """
+        Method to authenticate a Teacher user.
+
+        Parameter(s):
+        - input_username_or_email: str
+        - input_password: str
+
+        Returns:
+        - an instance of Teacher corresponding to the username or email if successful,
+          None otherwise
+        """
+        recept_path = "./Data/teachers.txt"
+        if os.path.exists(recept_path):
+            with open(recept_path, "r", encoding="utf8") as rf:
+                lines = rf.readlines()
+            for line in lines:
+                # Sequence unpacking: 
+                # https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences
+                username, email, password, role, recept_id, salary, staff_info = line.strip("\n").split(",")
+                
+                if input_username_or_email == username or email:
+                    if input_password == password:
+                        return Teacher(username, email, password, role, recept_id, salary, staff_info)
+                    else:
+                        return None # or return, or break
+        else:
+            print(f"Please check subdirectory and file {recept_path} exists.")
     def __init__(self, username, email, password, role, staff_ID, salary, staff_info, teacher_ID):
         super().__init__(username, email, password, role, staff_ID, salary, staff_info)
 
