@@ -15,5 +15,5 @@ class User:
     self.email = email
     self.password = password
     self.role = role
-if __name__ = "__main__":
+if __name__ == "__main__":
   pass
