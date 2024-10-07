@@ -1,4 +1,4 @@
-from Classes.user_class import User
+from classes.user_class import User
 
 class Staff(User):
     def __init__(self, username, email, password, role, staff_type, staff_ID, salary, staff_info):

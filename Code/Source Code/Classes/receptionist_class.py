@@ -1,6 +1,8 @@
-from Classes.staff_class import Staff
+import os
+from classes.staff_class import Staff
 
 class Receptionist(Staff):
+    @staticmethod
     def authenticate(input_username_or_email, input_password):
         """
         Method to authenticate a Receptionist user.
@@ -20,11 +22,11 @@ class Receptionist(Staff):
             for line in lines:
                 # Sequence unpacking: 
                 # https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences
-                recept_id, first_name, last_name, contact_num, username, email, password = line.strip("\n").split(",")
+                username, email, password, role, recept_id, salary, staff_info = line.strip("\n").split(",")
                 
                 if input_username_or_email == username or email:
                     if input_password == password:
-                        return ReceptionistUser(recept_id, first_name, last_name, contact_num, input_username, input_password)
+                        return Receptionist(username, email, password, role, recept_id, salary, staff_info)
                     else:
                         return None # or return, or break
         else:
@@ -34,7 +36,7 @@ class Receptionist(Staff):
         super().__init__(username, email, password, role, staff_type, staff_ID, salary, staff_info)
 
 if __name__ == "__main__":
-    receptionist = Receptionist("John Doe", "john.doe@example.com", "password123", "receptionist", "Receptionist", "R001", 50000, "Receptionist of Mathematics")
+    receptionist = Receptionist("John Doe", "john.doe@example.com", "password123", "Receptionist", "R001", 50000, "Receptionist of Mathematics")
     print(receptionist.username)
     print(receptionist.email)
     print(receptionist.password)
