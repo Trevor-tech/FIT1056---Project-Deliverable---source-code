@@ -30,3 +30,4 @@ if __name__ == "__main__":
     print(staff.staff_ID)
     print(staff.salary)
     print(staff.staff_info)
+    pass
