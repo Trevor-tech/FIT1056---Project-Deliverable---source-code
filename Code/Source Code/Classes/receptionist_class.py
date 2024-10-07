@@ -20,9 +20,9 @@ class Receptionist(Staff):
             for line in lines:
                 # Sequence unpacking: 
                 # https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences
-                recept_id, first_name, last_name, contact_num, username, password = line.strip("\n").split(",")
+                recept_id, first_name, last_name, contact_num, username, email, password = line.strip("\n").split(",")
                 
-                if input_username == username:
+                if input_username_or_email == username or email:
                     if input_password == password:
                         return ReceptionistUser(recept_id, first_name, last_name, contact_num, input_username, input_password)
                     else:
