@@ -3,7 +3,7 @@ The homepage of Empower U allowing users to login and select a series of options
 """
 import sys
 import os
-
+print('current directory:', os.getcwd())
 # Add the current directory to the Python path
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
@@ -15,6 +15,7 @@ from classes.user_class import User
 from classes.student_class import Student
 from classes.teacher_class import Teacher
 from classes.receptionist_class import Receptionist
+from classes.staff_class import Staff
 import UI.student_page
 import UI.teacher_page
 import UI.receptionist_page
@@ -35,11 +36,11 @@ class HomePage:
         self.frame.pack(pady=20)
 
         # Enter username.
-        self.username_var = tk.StringVar()
-        self.username_label = tk.Label(self.frame, text="Username:")
-        self.username_label.grid(row=0, column=0, padx=5, pady=5)
-        self.username_entry = tk.Entry(self.frame, textvariable=self.username_var)
-        self.username_entry.grid(row=0, column=1, padx=5, pady=5)
+        self.username_email_var = tk.StringVar()
+        self.username_email_label = tk.Label(self.frame, text="Username/Email:")
+        self.username_email_label.grid(row=0, column=0, padx=5, pady=5)
+        self.username_email_entry = tk.Entry(self.frame, textvariable=self.username_email_var)
+        self.username_email_entry.grid(row=0, column=1, padx=5, pady=5)
 
         # Enter password.
         self.password_var = tk.StringVar()
@@ -53,11 +54,12 @@ class HomePage:
         self.login_button.grid(row=2, column=0, columnspan=2, pady=10)
 
     def login(self):
-        username = self.username_var.get()
-        email = self.email_var.get()
+        username_email = self.username_email_var.get()
         password = self.password_var.get()
 
-        user = Receptionist.authenticate(username, email, password)
+        user = Staff.authenticate(username_email, password)
+        if user == False:
+            user = Student.authenticate(username_email, password)
 
         if user:
             # Check if login as receptionist.
@@ -67,12 +69,13 @@ class HomePage:
             elif isinstance(user, Teacher):
                 self.show_teacher_frame(user)
             # Check if login as student.
-            elif isinstance(user, Student):
+        elif isinstance(user, Student):
                 self.show_student_frame(user)
         else:
             self.error_label = tk.Label(self.frame, text="Invalid username or password", fg="red", font=("Arial", 10, "bold"))
             self.error_label.grid(row=3, column=0, columnspan=2, pady=5)
 
+    """
     def authenticate(self, username, password):
         data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'Data')
         
@@ -98,7 +101,8 @@ class HomePage:
                     return Teacher(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
         
         return False
-
+        """
+    
     def show_options(self, user):
         options_window = tk.Toplevel(self.root)
         options_window.title(f"Welcome, {user.name}")
@@ -125,3 +129,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     home_page = HomePage(root)
     root.mainloop()
+    

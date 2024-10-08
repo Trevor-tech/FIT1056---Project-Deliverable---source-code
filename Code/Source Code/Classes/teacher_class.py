@@ -1,4 +1,8 @@
 import os
+# Check if can get data from data folder.
+print("Files in data directory:", os.listdir("../data"))
+# Use an absolute path to the data directory
+data_directory = os.path.abspath("../data")
 from classes.staff_class import Staff
 
 class Teacher(Staff):
@@ -16,7 +20,7 @@ class Teacher(Staff):
         - an instance of Teacher corresponding to the username or email if successful,
           None otherwise
         """
-        recept_path = "./Data/teachers.txt"
+        recept_path = os.path.join("../data/teachers.txt")   
         if os.path.exists(recept_path):
             with open(recept_path, "r", encoding="utf8") as rf:
                 lines = rf.readlines()
@@ -25,7 +29,7 @@ class Teacher(Staff):
                 # https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences
                 username, email, password, role, teacher_ID, salary, staff_info = line.strip("\n").split(",")
                 
-                if input_username_or_email == username or email:
+                if input_username_or_email == username or input_username_or_email == email:
                     if input_password == password:
                         return Teacher(username, email, password, role, teacher_ID, salary, staff_info)
                     else:
