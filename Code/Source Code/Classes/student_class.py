@@ -1,8 +1,5 @@
 import os
-# Check if can get data from data folder.
-print("Files in data directory:", os.listdir("../data"))
-# Use an absolute path to the data directory
-data_directory = os.path.abspath("../data")
+import sys
 from classes.user_class import User
 
 class Student(User):
@@ -33,7 +30,7 @@ class Student(User):
                     if input_password == password:
                         return Student(username, email, password, student_ID)
                     else:
-                        return None # or return, or break
+                        return None
         else:
             print(f"Please check subdirectory and file {recept_path} exists.")
         pass
@@ -55,3 +52,11 @@ if __name__ == "__main__":
     print(student.email)
     print(student.password)
     print(student.student_ID)
+
+    # Test authentication
+    authenticated_student = Student.authenticate("John Doe", "password123")
+    if authenticated_student:
+        print("Authentication successful")
+        print(f"Authenticated student ID: {authenticated_student.student_ID}")
+    else:
+        print("Authentication failed")

@@ -1,8 +1,4 @@
 import os
-# Check if can get data from data folder.
-print("Files in data directory:", os.listdir("../data"))
-# Use an absolute path to the data directory
-data_directory = os.path.abspath("../data")
 from classes.staff_class import Staff
 from classes.teacher_class import Teacher
 from classes.student_class import Student
