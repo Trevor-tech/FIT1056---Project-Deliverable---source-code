@@ -37,7 +37,7 @@ class Student:
             
                     if input_username == username:
                         if input_password == password:
-                            return True
+                            return Student(username, email, password, student_ID)
                         else:
                             return False
         # If we've gone through all lines and haven't returned yet, the username wasn't found

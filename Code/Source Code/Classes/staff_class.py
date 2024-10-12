@@ -4,14 +4,14 @@ from classes.user_class import User
 class Staff(User):
     
     @staticmethod
-    def authenticate(input_username_or_email, input_password):
+    def authenticate(input_username, input_password):
         # Import here so that circular import error is avoided between staff_class.py and receptionist_class.py.
         from classes.receptionist_class import Receptionist
         from classes.teacher_class import Teacher
 
-        if Receptionist.authenticate(input_username_or_email, input_password):
+        if Receptionist.authenticate(input_username, input_password):
             return True
-        elif Teacher.authenticate(input_username_or_email, input_password):
+        elif Teacher.authenticate(input_username, input_password):
             return True
         else:
             return False
