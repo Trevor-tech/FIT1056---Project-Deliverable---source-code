@@ -57,21 +57,25 @@ class HomePage:
         username = self.username_var.get()
         password = self.password_var.get()
 
+        # Try to authenticate as staff first
         user = Staff.authenticate(username, password)
-        if user == False:
+        
+        # If staff authentication fails, try student authentication
+        if user is None:
             user = Student.authenticate(username, password)
 
         if user:
-            # Check if login as receptionist.
             if isinstance(user, Receptionist):
                 self.show_receptionist_frame(user)
-            # Check if login as teacher.
             elif isinstance(user, Teacher):
                 self.show_teacher_frame(user)
-            # Check if login as student.
-        elif isinstance(user, Student):
+            elif isinstance(user, Student):
                 self.show_student_frame(user)
+            else:
+                print(f"Unknown user type: {type(user)}")
         else:
+            if hasattr(self, 'error_label'):
+                self.error_label.destroy()
             self.error_label = tk.Label(self.frame, text="Invalid username or password", fg="red", font=("Arial", 10, "bold"))
             self.error_label.grid(row=3, column=0, columnspan=2, pady=5)
 
@@ -125,8 +129,34 @@ class HomePage:
         # This method would handle the selected option
         messagebox.showinfo("Option Selected", f"You selected: {option}")
 
+    def show_student_frame(self, student):
+        # Clear the login frame
+        self.frame.destroy()
+
+        # Create a new frame for the student
+        student_frame = tk.Frame(self.root)
+        student_frame.pack(pady=20)
+
+        tk.Label(student_frame, text=f"Welcome, {student.username}!").pack()
+
+        # Add buttons for student actions
+        tk.Button(student_frame, text="View Courses", command=lambda: self.show_option("View Courses")).pack(pady=5)
+        tk.Button(student_frame, text="Submit Assignment", command=lambda: self.show_option("Submit Assignment")).pack(pady=5)
+        tk.Button(student_frame, text="Check Grades", command=lambda: self.show_option("Check Grades")).pack(pady=5)
+
+        # Add a logout button
+        tk.Button(student_frame, text="Logout", command=self.logout).pack(pady=10)
+
+    def show_option(self, option):
+        messagebox.showinfo("Option Selected", f"You selected: {option}")
+
+    def logout(self):
+        self.root.destroy()
+        new_root = tk.Tk()
+        HomePage(new_root)
+        new_root.mainloop()
+
 if __name__ == "__main__":
     root = tk.Tk()
     home_page = HomePage(root)
     root.mainloop()
-    
