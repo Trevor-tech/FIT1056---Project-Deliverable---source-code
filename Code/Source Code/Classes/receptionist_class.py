@@ -30,7 +30,7 @@ class Receptionist(Staff):
     Returns:
     - True if authentication is successful, False otherwise
     """
-        receptionists_path = os.path.join(data_dir, 'receptionists.txt')
+        receptionists_path = os.path.join(data_dir, 'receptionist.txt')
         if os.path.exists(receptionists_path):
             with open(receptionists_path, "r", encoding="utf8") as rf:
                 lines = rf.readlines()
