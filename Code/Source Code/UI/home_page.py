@@ -36,11 +36,11 @@ class HomePage:
         self.frame.pack(pady=20)
 
         # Enter username.
-        self.username_email_var = tk.StringVar()
-        self.username_email_label = tk.Label(self.frame, text="Username/Email:")
-        self.username_email_label.grid(row=0, column=0, padx=5, pady=5)
-        self.username_email_entry = tk.Entry(self.frame, textvariable=self.username_email_var)
-        self.username_email_entry.grid(row=0, column=1, padx=5, pady=5)
+        self.username_var = tk.StringVar()
+        self.username_label = tk.Label(self.frame, text="Username:")
+        self.username_label.grid(row=0, column=0, padx=5, pady=5)
+        self.username_entry = tk.Entry(self.frame, textvariable=self.username_var)
+        self.username_entry.grid(row=0, column=1, padx=5, pady=5)
 
         # Enter password.
         self.password_var = tk.StringVar()
@@ -54,12 +54,12 @@ class HomePage:
         self.login_button.grid(row=2, column=0, columnspan=2, pady=10)
 
     def login(self):
-        username_email = self.username_email_var.get()
+        username = self.username_var.get()
         password = self.password_var.get()
 
-        user = Staff.authenticate(username_email, password)
+        user = Staff.authenticate(username, password)
         if user == False:
-            user = Student.authenticate(username_email, password)
+            user = Student.authenticate(username, password)
 
         if user:
             # Check if login as receptionist.
