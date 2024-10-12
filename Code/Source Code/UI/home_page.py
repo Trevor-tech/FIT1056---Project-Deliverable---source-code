@@ -78,35 +78,7 @@ class HomePage:
                 self.error_label.destroy()
             self.error_label = tk.Label(self.frame, text="Invalid username or password", fg="red", font=("Arial", 10, "bold"))
             self.error_label.grid(row=3, column=0, columnspan=2, pady=5)
-
-    """
-    def authenticate(self, username, password):
-        data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'Data')
-        
-        with open(os.path.join(data_dir, 'receptionist.txt'), 'r') as receptionist_file:
-            receptionist_data = receptionist_file.readlines()
-            for line in receptionist_data:
-                line = line.strip().split(',')
-                if line[0] == username and line[2] == password:
-                    return Receptionist(line[0], line[1], line[2], line[4], line[5], line[6], line[7])
-        
-        with open(os.path.join(data_dir, 'students.txt'), 'r') as student_file:
-            student_data = student_file.readlines()
-            for line in student_data:
-                line = line.strip().split(',')
-                if line[0] == username and line[2] == password:
-                    return Student(line[0], line[1], line[2], line[3])
-        
-        with open(os.path.join(data_dir, 'teachers.txt'), 'r') as teacher_file:
-            teacher_data = teacher_file.readlines()
-            for line in teacher_data:
-                line = line.strip().split(',')
-                if line[0] == username and line[2] == password:
-                    return Teacher(line[0], line[1], line[2], line[3], line[4], line[5], line[6])
-        
-        return False
-        """
-    
+ 
     def show_options(self, user):
         options_window = tk.Toplevel(self.root)
         options_window.title(f"Welcome, {user.name}")
