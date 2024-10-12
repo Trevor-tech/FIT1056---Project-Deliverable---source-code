@@ -156,6 +156,42 @@ class HomePage:
         HomePage(new_root)
         new_root.mainloop()
 
+    def show_receptionist_frame(self, receptionist):
+        # Clear the login frame
+        self.frame.destroy()
+
+        # Create a new frame for the receptionist
+        receptionist_frame = tk.Frame(self.root)
+        receptionist_frame.pack(pady=20)
+
+        tk.Label(receptionist_frame, text=f"Welcome, {receptionist.username}!").pack()
+
+        # Add buttons for receptionist actions
+        tk.Button(receptionist_frame, text="Manage Enrollments", command=lambda: self.show_option("Manage Enrollments")).pack(pady=5)
+        tk.Button(receptionist_frame, text="Schedule Appointments", command=lambda: self.show_option("Schedule Appointments")).pack(pady=5)
+        tk.Button(receptionist_frame, text="Generate Reports", command=lambda: self.show_option("Generate Reports")).pack(pady=5)
+
+        # Add a logout button
+        tk.Button(receptionist_frame, text="Logout", command=self.logout).pack(pady=10)
+
+    def show_teacher_frame(self, teacher):
+        # Clear the login frame
+        self.frame.destroy()
+
+        # Create a new frame for the teacher
+        teacher_frame = tk.Frame(self.root)
+        teacher_frame.pack(pady=20)
+
+        tk.Label(teacher_frame, text=f"Welcome, {teacher.username}!").pack()
+
+        # Add buttons for teacher actions
+        tk.Button(teacher_frame, text="Manage Courses", command=lambda: self.show_option("Manage Courses")).pack(pady=5)
+        tk.Button(teacher_frame, text="Grade Assignments", command=lambda: self.show_option("Grade Assignments")).pack(pady=5)
+        tk.Button(teacher_frame, text="View Student Progress", command=lambda: self.show_option("View Student Progress")).pack(pady=5)
+
+        # Add a logout button
+        tk.Button(teacher_frame, text="Logout", command=self.logout).pack(pady=10)
+
 if __name__ == "__main__":
     root = tk.Tk()
     home_page = HomePage(root)

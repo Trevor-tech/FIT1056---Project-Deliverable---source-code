@@ -42,10 +42,10 @@ class Receptionist(Staff):
                     if input_username == username:
                         if input_password == password:
                             return Receptionist(username, email, password, role, recept_ID, salary, staff_info)
-                return None
+                return False
         else:
             print(f"Please check that the file {receptionists_path} exists.")
-            return None
+            return False
             
     def __init__(self, username, email, password, role, recept_id, salary, staff_info):
         super().__init__(username, email, password, role, recept_id, salary, staff_info)
