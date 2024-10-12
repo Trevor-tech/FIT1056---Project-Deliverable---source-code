@@ -42,21 +42,13 @@ class Receptionist(Staff):
                     if input_username == username:
                         if input_password == password:
                             return Receptionist(username, email, password, role, recept_ID, salary, staff_info)
-                        else:
-                            return False
-        # If we've gone through all lines and haven't returned yet, the username wasn't found
-                print(f"Username {input_username} not found in file")  # Debug print
-                return False
+                return None
         else:
             print(f"Please check that the file {receptionists_path} exists.")
-            return False
+            return None
             
     def __init__(self, username, email, password, role, recept_id, salary, staff_info):
-        super().__init__(role, recept_id, salary, staff_info)
-        self.username = username
-        self.email = email
-        self.password = password
-        self.import_all_data()
+        super().__init__(username, email, password, role, recept_id, salary, staff_info)
     
     def import_all_data(self):
         """
@@ -115,4 +107,3 @@ if __name__ == "__main__":
     print(receptionist.role)
     print(receptionist.staff_ID)
     print(receptionist.salary)
-    pass
