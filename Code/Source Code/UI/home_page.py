@@ -3,11 +3,10 @@ The homepage of Empower U allowing users to login and select a series of options
 """
 import sys
 import os
-print('current directory:', os.getcwd())
-# Add the current directory to the Python path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.insert(0, parent_dir)
+
+# Get the path to the 'Source Code' directory
+source_code_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, source_code_dir)
 
 import tkinter as tk
 from tkinter import messagebox
@@ -25,6 +24,9 @@ class HomePage:
         self.root = root
         self.root.title("Empower U")
         self.root.geometry("1000x1000")  # Increased height to accommodate logo
+
+        # Define current_dir
+        current_dir = os.path.dirname(os.path.abspath(__file__))
 
         # Load and display the logo
         self.logo_image = tk.PhotoImage(file=os.path.join(current_dir, "EmpowerU_logo.png")) # Image was AI generated (ChatGPT, 2024).
