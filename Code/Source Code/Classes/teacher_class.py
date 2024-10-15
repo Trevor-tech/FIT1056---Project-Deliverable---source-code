@@ -70,7 +70,7 @@ class Teacher(Staff):
             students = []
             
             #Iterates each row of student progress information
-            for line in lines[1:]: # '[1:]' for ensuring first row is not retrieved because it is header information.
+            for line in lines[1:]: 
                 # Remove unwanted spaces, entry spaces and splits into list.
                 line = line.strip().strip('\n').split(',') 
                 # Creates a list of student profress information

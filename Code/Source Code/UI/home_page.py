@@ -9,6 +9,7 @@ source_code_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, source_code_dir)
 
 import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox
 from classes.user_class import User 
 from classes.student_class import Student
@@ -167,7 +168,10 @@ class HomePage:
         tk.Button(teacher_frame, text="Logout", command=self.logout).pack(pady=10)
 
     def view_student_progress(self):
-        self.frame.destroy()
+        root = tk.Tk()
+        root.title(f'Student Progress:')
+        root.geometry("800x800")
+        #self.frame.destroy()
         
         student_progress_frame = tk.Frame(self.root)
         student_progress_frame.pack(pady=20)
@@ -176,12 +180,40 @@ class HomePage:
         header.grid(row=0, column = 0, columnspan=2, padx=10, pady=10)
 
         student_progress = Teacher.student_progress_details(self)
+        columns = ('Student', 'Student ID', 'A1', 'A2', 'A3', 'A4', 'T1', 'T2', 'Average', 'Lessons Completed')
+        tree = ttk.Treeview(root, columns=columns, show="headings")
+        tree.heading('Student', text='Student Name')
+        tree.heading('Student ID', text='Student ID')
+        tree.heading('A1', text='A1 (%)')
+        tree.heading('A2', text='A2 (%)')
+        tree.heading('A3', text='A3 (%)')
+        tree.heading('A4', text ='A4 (%)')
+        tree.heading('T1', text='T1 (%)')
+        tree.heading('T2', text='T2 (%)')
+        tree.heading('Average', text='Average Mark (%)')
+        tree.heading('Lessons Completed', text='Lessons Completed (%)')
+        tree.column('Student', width = 150)
+        tree.column('Student ID', width = 150)
+        tree.column('A1', width = 50)
+        tree.column('A2', width = 50)
+        tree.column('A3', width = 50)
+        tree.column('A4', width = 50)
+        tree.column('T1', width = 50)
+        tree.column('T2', width = 50)
+        tree.column('Average', width = 250)
+        tree.column('Lessons Completed', width = 250)
 
+        for row in student_progress:
+            tree.insert('', tk.END, values = row)
+
+        tree.pack(expand=True, fill=tk.BOTH)
+        '''
         incrementer = 1
         for results in student_progress:
             result_label = tk.Label(student_progress_frame, text=results)
             result_label.grid(row=incrementer, column=0, columnspan=2, padx=10, pady=10)
             incrementer += 1
+        '''
 
 if __name__ == "__main__":
     root = tk.Tk()
