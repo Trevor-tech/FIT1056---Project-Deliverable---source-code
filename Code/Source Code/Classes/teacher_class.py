@@ -58,6 +58,26 @@ class Teacher(Staff):
     def create_assignment(self):
         pass
 
+    def student_progress_details(self):
+        '''
+        Method to fetch student progress information
+
+        Returns:
+        - A list of depth 2 of each student's progress.
+        '''
+        with open(os.path.join(data_dir, 'student_progress.txt'), "r", encoding="utf8") as rf:
+            lines = rf.readlines()
+            students = []
+            
+            #Iterates each row of student progress information
+            for line in lines[1:]: # '[1:]' for ensuring first row is not retrieved because it is header information.
+                # Remove unwanted spaces, entry spaces and splits into list.
+                line = line.strip().strip('\n').split(',') 
+                # Creates a list of student profress information
+                student_info = [line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7], line[8], line[9]]
+                students.append(student_info)
+            return students
+
 if __name__ == "__main__":
     teacher = Teacher("John Doe", "john.doe@example.com", "password123", "teacher", "T001", 50000, "Teacher of Mathematics", "T001")
     print(teacher.username)
