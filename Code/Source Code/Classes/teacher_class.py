@@ -53,70 +53,10 @@ class Teacher(Staff):
         super().__init__(username, email, password, role, teacher_ID, salary, staff_info)
 
     def create_assignment(self):
-        """
-        Method to create a new assignment.
-
-        This method prompts the teacher for assignment details and saves them to a file.
-        """
-        assignment_name = input("Enter assignment name: ")
-        due_date = input("Enter due date (YYYY-MM-DD): ")
-        description = input("Enter assignment description: ")
-
-        assignments_path = os.path.join(data_dir, 'assignments.txt')
-        
-        # Generate a unique assignment ID
-        assignment_id = f"A{str(sum(1 for line in open(assignments_path, 'r'))+1).zfill(3)}"
-
-        with open(assignments_path, "a", encoding="utf8") as af:
-            af.write(f"{assignment_id},{assignment_name},{due_date},{description},{self.teacher_ID}\n")
-
-        print(f"Assignment '{assignment_name}' created successfully with ID: {assignment_id}")
+        pass
 
     def grade_assignment(self):
-        """
-        Method to grade assignments submitted by students.
-
-        This method allows the teacher to select an assignment, view submissions,
-        and assign grades to students' work.
-        """
-        assignments_path = os.path.join(data_dir, 'assignments.txt')
-        submissions_path = os.path.join(data_dir, 'submissions.txt')
-        grades_path = os.path.join(data_dir, 'grades.txt')
-
-        # Display available assignments
-        print("Available assignments:")
-        with open(assignments_path, "r", encoding="utf8") as af:
-            assignments = af.readlines()
-            for assignment in assignments:
-                assignment_id, name, _, _, _ = assignment.strip().split(',')
-                print(f"{assignment_id}: {name}")
-
-        # Select an assignment to grade
-        assignment_id = input("Enter the assignment ID to grade: ")
-
-        # Read submissions for the selected assignment
-        with open(submissions_path, "r", encoding="utf8") as sf:
-            submissions = [line.strip().split(',') for line in sf if line.split(',')[1] == assignment_id]
-
-        if not submissions:
-            print("No submissions found for this assignment.")
-            return
-
-        # Grade each submission
-        for submission in submissions:
-            student_id, _, submission_file = submission
-            print(f"\nGrading submission from student {student_id}")
-            print(f"Submission file: {submission_file}")
-            
-            # In a real system, you might open and display the submission file here
-            # For this example, we'll just ask for a grade
-            grade = input("Enter grade for this submission (0-100): ")
-
-            # Save the grade
-            with open(grades_path, "a", encoding="utf8") as gf:
-                gf.write(f"{student_id},{assignment_id},{grade},{self.teacher_ID}\n")
-
-        print("Grading completed for the selected assignment.")
+        pass
 
     def student_progress_details(self):
         '''
