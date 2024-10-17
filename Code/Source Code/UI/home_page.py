@@ -19,6 +19,7 @@ from classes.staff_class import Staff
 import UI.student_page
 import UI.teacher_page
 import UI.receptionist_page
+from UI.manage_enrollments import ManageEnrollments
 
 class HomePage:
     def __init__(self, root):
@@ -133,21 +134,37 @@ class HomePage:
 
     def show_receptionist_frame(self, receptionist):
         # Clear the login frame
-        self.frame.destroy()
+        if hasattr(self, 'frame'):
+            self.frame.destroy()
 
         # Create a new frame for the receptionist
-        receptionist_frame = tk.Frame(self.root)
-        receptionist_frame.pack(pady=20)
+        self.receptionist_frame = tk.Frame(self.root)
+        self.receptionist_frame.pack(pady=20)
 
-        tk.Label(receptionist_frame, text=f"Welcome, {receptionist.username}!").pack()
+        tk.Label(self.receptionist_frame, text=f"Welcome, {receptionist.username}!").pack()
 
         # Add buttons for receptionist actions
-        tk.Button(receptionist_frame, text="Manage Enrollments", command=lambda: self.show_option("Manage Enrollments")).pack(pady=5)
-        tk.Button(receptionist_frame, text="Schedule Appointments", command=lambda: self.show_option("Schedule Appointments")).pack(pady=5)
-        tk.Button(receptionist_frame, text="Generate Reports", command=lambda: self.show_option("Generate Reports")).pack(pady=5)
+        tk.Button(self.receptionist_frame, text="Manage Enrollments", command=lambda: self.show_manage_enrollments(receptionist)).pack(pady=5)
+        tk.Button(self.receptionist_frame, text="Schedule Appointments", command=lambda: self.show_option("Schedule Appointments")).pack(pady=5)
+        tk.Button(self.receptionist_frame, text="Generate Reports", command=lambda: self.show_option("Generate Reports")).pack(pady=5)
 
         # Add a logout button
-        tk.Button(receptionist_frame, text="Logout", command=self.logout).pack(pady=10)
+        tk.Button(self.receptionist_frame, text="Logout", command=self.logout).pack(pady=10)
+
+    def show_manage_enrollments(self, receptionist):
+        # Hide the receptionist frame
+        self.receptionist_frame.pack_forget()
+
+        # Create and show the ManageEnrollments frame
+        self.manage_enrollments = ManageEnrollments(self.root, self, receptionist)
+        self.manage_enrollments.pack(expand=True, fill=tk.BOTH)
+
+    def show_receptionist_menu(self):
+        # This method will be called from ManageEnrollments to return to the receptionist menu
+        if hasattr(self, 'manage_enrollments'):
+            self.manage_enrollments.pack_forget()
+        if hasattr(self, 'receptionist_frame'):
+            self.receptionist_frame.pack()
 
     def show_teacher_frame(self, teacher):
         # Clear the login frame

@@ -1,4 +1,4 @@
-from Classes.course_class import Course
+from classes.course_class import Course
 
 class Assignment(Course):
     def __init__(self, course_ID, course_name, assignment_ID, title, due_date):
