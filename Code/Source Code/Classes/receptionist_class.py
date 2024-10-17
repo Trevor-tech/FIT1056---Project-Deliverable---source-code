@@ -56,6 +56,7 @@ class Receptionist(Staff):
         """
         self.import_teachers_data()
         self.import_student_data()
+        self.import_receptionists_data()
     
     def import_teachers_data(self):
         """
@@ -98,6 +99,24 @@ class Receptionist(Staff):
                     self.students.append(student_obj)
         else:
             print(f"Please check the subdirectory and file exists for {students_path}.")
+    
+    def import_receptionists_data(self):
+        """
+        Import receptionists' data.
+
+        Returns:
+        Bool -  True if import successfully, 
+                false otherwise
+        """
+        self.receptionists = []
+        receptionists_path = "./data/receptionist.txt"
+        if os.path.exists(receptionists_path):
+            with open(receptionists_path, "r", encoding="utf8") as rf:
+                lines = rf.readlines()
+                for line in lines:
+                    username, email, password, role, recept_id, salary, staff_info = line.strip("\n").split(",")
+                    receptionist_obj = Receptionist(username, email, password, role, recept_id, salary, staff_info)
+                    self.receptionists.append(receptionist_obj)
 
 if __name__ == "__main__":
     receptionist = Receptionist("John Doe", "john.doe@example.com", "password123", "Receptionist", "R001", 50000, "Receptionist of Mathematics")

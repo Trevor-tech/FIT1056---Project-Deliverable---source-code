@@ -66,3 +66,6 @@ def test_file_not_found(student_class, test_data_dir):
     
     result = student_class.authenticate("johndoe", "password123")
     assert result is None
+
+if __name__ == "__main__":
+    pytest.main([__file__])

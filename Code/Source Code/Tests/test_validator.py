@@ -1,4 +1,16 @@
 import pytest
+import os
+import sys
+
+# Get the absolute path of the current file
+current_file_path = os.path.abspath(__file__)
+
+# Navigate up to the Source Code directory
+source_code_dir = os.path.dirname(os.path.dirname(current_file_path))
+
+# Add the Source Code directory to the Python path
+sys.path.insert(0, source_code_dir)
+
 from Utilities.validator import is_date_valid, is_time_valid
 
 class TestIsDateValid:
@@ -134,3 +146,6 @@ class TestIsTimeValid:
         captured = capsys.readouterr()
         assert "Invalid input time format:12:30:00. Please enter a time in the format 'HH:MM'." in captured.out
 
+# Add this block at the end of the file
+if __name__ == "__main__":
+    pytest.main(["-v", __file__])
