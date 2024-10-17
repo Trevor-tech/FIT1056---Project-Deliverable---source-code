@@ -52,10 +52,10 @@ class Teacher(Staff):
     def __init__(self, username, email, password, role, teacher_ID, salary, staff_info):
         super().__init__(username, email, password, role, teacher_ID, salary, staff_info)
 
-    def grade_assignment(self):
+    def create_assignment(self):
         pass
 
-    def create_assignment(self):
+    def grade_assignment(self):
         pass
 
     def student_progress_details(self):
