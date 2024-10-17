@@ -1,6 +1,6 @@
 import os
 import sys
-
+import csv
 # Get the absolute path of the current file
 current_file_path = os.path.abspath(__file__)
 
@@ -12,6 +12,9 @@ sys.path.insert(0, source_code_dir)
 
 # Construct the path to the data directory
 data_dir = os.path.join(source_code_dir, 'data')
+
+# Set the path to the student_progress.txt file
+student_progress_file = os.path.join(data_dir, 'student_progress.txt')
 
 import tkinter as tk
 from tkinter import ttk
@@ -47,15 +50,47 @@ class StudentPage(tk.Tk):
     
     
     def view_courses(self):
-        messagebox.showinfo("Courses", "Here you will see your courses.")
+        messagebox.showinfo(" Enrolled courses")
 
     def submit_assignment(self):
         messagebox.showinfo("Submit Assignment", "Assignment submission functionality.")
 
     def check_grades(self):
-        root=tk.Tk()
-        root.title("Overview")
-        root.geometry("720x640")
+        # Create a new window to display the grades
+        grades_window = tk.Toplevel(self)
+        grades_window.title("Overview")
+        grades_window.geometry("720x640")
+
+        # Set up Treeview
+        columns = ['Assignment 1', 'Assignment 2', 'Assignment 3', 'Assignment 4', 'Test 1', 'Test 2', 'Average', 'Lessons Completed']
+
+        tree = ttk.Treeview(grades_window, columns=columns, show='headings')
+        tree.pack(expand=True, fill=tk.BOTH)
+
+        # Set the column headings
+        for column in columns:
+            tree.heading(column, text=column)
+            tree.column(column, anchor="center")
+
+        # Read the grades file and display grades for the logged-in student
+        student_data = self.get_student_data(self.student.username)
+
+        if student_data:
+            # Insert the student's grades into the Treeview
+            tree.insert('', tk.END, values=student_data[2:])  # Only insert grade-related data
+        else:
+            messagebox.showwarning("Error", "No data found for this student")
+
+    def get_student_data(self, username):
+        """Read the grades file and return the grades for the given username."""
+        if os.path.exists(student_progress_file):
+            with open(student_progress_file, "r") as file:
+                reader = csv.reader(file)
+                next(reader)  # Skip the header row
+                for row in reader:
+                    if row[0] == username:  # Match the username
+                        return row
+        return None
         
 
     def logout(self):

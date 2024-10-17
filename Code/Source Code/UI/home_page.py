@@ -16,7 +16,7 @@ from classes.student_class import Student
 from classes.teacher_class import Teacher
 from classes.receptionist_class import Receptionist
 from classes.staff_class import Staff
-import UI.student_page
+from UI.student_page import StudentPage
 import UI.teacher_page
 import UI.receptionist_page
 
@@ -105,22 +105,12 @@ class HomePage:
         messagebox.showinfo("Option Selected", f"You selected: {option}")
 
     def show_student_frame(self, student):
-        # Clear the login frame
-        self.frame.destroy()
-
-        # Create a new frame for the student
-        student_frame = tk.Frame(self.root)
-        student_frame.pack(pady=20)
-
-        tk.Label(student_frame, text=f"Welcome, {student.username}!").pack()
-
-        # Add buttons for student actions
-        tk.Button(student_frame, text="View Courses", command=lambda: self.show_option("View Courses")).pack(pady=5)
-        tk.Button(student_frame, text="Submit Assignment", command=lambda: self.show_option("Submit Assignment")).pack(pady=5)
-        tk.Button(student_frame, text="Check Grades", command=lambda: self.show_option("Check Grades")).pack(pady=5)
-
-        # Add a logout button
-        tk.Button(student_frame, text="Logout", command=self.logout).pack(pady=10)
+        # Closes the HomePage window
+        self.root.destroy()  
+        
+        # Open the student dashboard
+        student_page = StudentPage(student)
+        student_page.mainloop()
 
     def show_option(self, option):
         messagebox.showinfo("Option Selected", f"You selected: {option}")
