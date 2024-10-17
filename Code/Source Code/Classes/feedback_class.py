@@ -1,4 +1,4 @@
-from Classes.assignment_class import Assignment
+from classes.assignment_class import Assignment
 
 class Feedback(Assignment):
     def __init__(self, course_ID, course_name, assignment_ID, title, due_date, feedback_ID, comments, grades):
