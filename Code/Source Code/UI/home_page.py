@@ -168,25 +168,34 @@ class HomePage:
 
         # Add buttons for teacher actions
         tk.Button(teacher_frame, text="Manage Courses", command=lambda: self.show_option("Manage Courses")).pack(pady=5)
-        tk.Button(teacher_frame, text="Grade Assignments", command=lambda: self.show_option("Grade Assignments")).pack(pady=5)
+        tk.Button(teacher_frame, text="Grade Assignments", command=lambda: self.grade_assignment).pack(pady=5)
         tk.Button(teacher_frame, text="View Student Progress", command=self.view_student_progress).pack(pady=5)
 
         # Add a logout button
         tk.Button(teacher_frame, text="Logout", command=self.logout).pack(pady=10)
 
+    def grade_assignment(self):
+        pass
+
     def view_student_progress(self):
+        """
+        A function which displays student progress as a table in a new window.
+        """
         root = tk.Tk()
         root.title(f'Student Progress:')
         root.geometry("800x800")
         #self.frame.destroy()
         
+        # Creates a new window.
         student_progress_frame = tk.Frame(self.root)
         student_progress_frame.pack(pady=20)
 
-        header = tk.Label(student_progress_frame, text=f'Student Progress:', font=("Arial", 20, "bold"))
-        header.grid(row=0, column = 0, columnspan=2, padx=10, pady=10)
+        #header = tk.Label(student_progress_frame, text=f'Student Progress:', font=("Arial", 20, "bold"))
+        #header.grid(row=0, column = 0, columnspan=2, padx=10, pady=10)
 
-        student_progress = Teacher.student_progress_details(self)
+        student_progress = Teacher.student_progress_details(self) # Calls method from Teacher class which extracts stored data of student progress.
+
+        # Display table
         columns = ('Student', 'Student ID', 'A1', 'A2', 'A3', 'A4', 'T1', 'T2', 'Average', 'Lessons Completed')
         tree = ttk.Treeview(root, columns=columns, show="headings")
         tree.heading('Student', text='Student Name')
@@ -210,6 +219,7 @@ class HomePage:
         tree.column('Average', width = 250)
         tree.column('Lessons Completed', width = 250)
 
+        # Enters extracted data into table 
         for row in student_progress:
             tree.insert('', tk.END, values = row)
 
