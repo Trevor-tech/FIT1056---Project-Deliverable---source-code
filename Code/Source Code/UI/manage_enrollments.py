@@ -26,7 +26,19 @@ sys.path.insert(0, source_code_dir)
 data_dir = os.path.join(source_code_dir, 'data')
 
 class ManageEnrollmentsPage(tk.Frame):
+    """
+    A class to represent the Manage Enrollments page in the application.
+    """
+
     def __init__(self, master, home_page, receptionist_user):
+        """
+        Initialize the ManageEnrollmentsPage.
+
+        Args:
+            master (tk.Tk): The root window.
+            home_page (HomePage): The home page instance.
+            receptionist_user (Receptionist): The logged-in receptionist user.
+        """
         super().__init__(master)
         self.master = master
         self.home_page = home_page
@@ -35,6 +47,7 @@ class ManageEnrollmentsPage(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
+        """Create and place the widgets for the Manage Enrollments page."""
         self.enrolment_label = tk.Label(self, text="Manage Enrollments")
         self.enrolment_label.pack(padx=10, pady=10)
 
@@ -61,13 +74,16 @@ class ManageEnrollmentsPage(tk.Frame):
         self.back_button.pack(padx=10, pady=10)
 
     def show(self):
+        """Display the Manage Enrollments page and load the enrollments."""
         self.pack()
         self.load_enrollments()
 
     def hide(self):
+        """Hide the Manage Enrollments page."""
         self.pack_forget()
 
     def load_enrollments(self):
+        """Load and display the enrollments from the enrollments.txt file."""
         self.enrollment_listbox.delete(0, tk.END)  # Clear existing entries
         try:
             file_path = os.path.join(data_dir, "enrollments.txt")
@@ -94,6 +110,7 @@ class ManageEnrollmentsPage(tk.Frame):
             messagebox.showerror("Error", f"An error occurred while loading enrollments: {str(e)}")
 
     def enroll_student(self):
+        """Open a new window to enroll a student."""
         self.enrol_window = tk.Toplevel(self)
         self.enrol_window.title("Enroll Student")
 
@@ -119,6 +136,7 @@ class ManageEnrollmentsPage(tk.Frame):
         self.enrol_button.pack(padx=10, pady=10)
 
     def enrol_student_confirm(self):
+        """Confirm and process the student enrollment."""
         course_id = self.course_id_entry.get()
         name = self.name_entry.get()
         date = self.date_entry.get()
@@ -145,6 +163,7 @@ class ManageEnrollmentsPage(tk.Frame):
             messagebox.showerror("Error", f"Failed to enroll student: {str(e)}")
 
     def unenroll_student(self):
+        """Unenroll a selected student from the enrollment list."""
         selected_indices = self.enrollment_listbox.curselection()
         if not selected_indices:
             messagebox.showwarning("No Selection", "Please select an enrollment to unenroll.")
@@ -160,6 +179,7 @@ class ManageEnrollmentsPage(tk.Frame):
             messagebox.showinfo("Success", "Student has been unenrolled.")
 
     def remove_enrollment(self, index):
+        """Remove an enrollment from the enrollments.txt file."""
         file_path = os.path.join(data_dir, 'enrollments.txt')
         try:
             with open(file_path, "r") as f:
@@ -173,5 +193,6 @@ class ManageEnrollmentsPage(tk.Frame):
             messagebox.showerror("Error", f"Failed to unenroll student: {str(e)}")
 
     def back_to_menu(self):
+        """Return to the receptionist menu."""
         self.hide()
         self.home_page.show_receptionist_menu()
