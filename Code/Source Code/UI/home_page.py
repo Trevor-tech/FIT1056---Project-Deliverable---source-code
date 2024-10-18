@@ -17,6 +17,7 @@ from classes.teacher_class import Teacher
 from classes.receptionist_class import Receptionist
 from classes.staff_class import Staff
 from UI.student_page import StudentPage
+from UI.teacher_page import TeacherPage
 import UI.teacher_page
 import UI.receptionist_page
 from UI.manage_enrollments import ManageEnrollments
@@ -157,81 +158,13 @@ class HomePage:
             self.receptionist_frame.pack()
 
     def show_teacher_frame(self, teacher):
-        # Clear the login frame
-        self.frame.destroy()
+        # Closes the HomePage window
+        self.root.destroy()  
 
-        # Create a new frame for the teacher
-        teacher_frame = tk.Frame(self.root)
-        teacher_frame.pack(pady=20)
-
-        tk.Label(teacher_frame, text=f"Welcome, {teacher.username}!").pack()
-
-        # Add buttons for teacher actions
-        tk.Button(teacher_frame, text="Manage Courses", command=lambda: self.show_option("Manage Courses")).pack(pady=5)
-        tk.Button(teacher_frame, text="Grade Assignments", command=lambda: self.grade_assignment).pack(pady=5)
-        tk.Button(teacher_frame, text="View Student Progress", command=self.view_student_progress).pack(pady=5)
-
-        # Add a logout button
-        tk.Button(teacher_frame, text="Logout", command=self.logout).pack(pady=10)
-
-    def grade_assignment(self):
-        pass
-
-    def view_student_progress(self):
-        """
-        A function which displays student progress as a table in a new window.
-        """
-        root = tk.Tk()
-        root.title(f'Student Progress:')
-        root.geometry("800x800")
-        #self.frame.destroy()
-        
-        # Creates a new window.
-        student_progress_frame = tk.Frame(self.root)
-        student_progress_frame.pack(pady=20)
-
-        #header = tk.Label(student_progress_frame, text=f'Student Progress:', font=("Arial", 20, "bold"))
-        #header.grid(row=0, column = 0, columnspan=2, padx=10, pady=10)
-
-        student_progress = Teacher.student_progress_details(self) # Calls method from Teacher class which extracts stored data of student progress.
-
-        # Display table
-        columns = ('Student', 'Student ID', 'A1', 'A2', 'A3', 'A4', 'T1', 'T2', 'Average', 'Lessons Completed')
-        tree = ttk.Treeview(root, columns=columns, show="headings")
-        tree.heading('Student', text='Student Name')
-        tree.heading('Student ID', text='Student ID')
-        tree.heading('A1', text='A1 (%)')
-        tree.heading('A2', text='A2 (%)')
-        tree.heading('A3', text='A3 (%)')
-        tree.heading('A4', text ='A4 (%)')
-        tree.heading('T1', text='T1 (%)')
-        tree.heading('T2', text='T2 (%)')
-        tree.heading('Average', text='Average Mark (%)')
-        tree.heading('Lessons Completed', text='Lessons Completed (%)')
-        tree.column('Student', width = 150)
-        tree.column('Student ID', width = 150)
-        tree.column('A1', width = 50)
-        tree.column('A2', width = 50)
-        tree.column('A3', width = 50)
-        tree.column('A4', width = 50)
-        tree.column('T1', width = 50)
-        tree.column('T2', width = 50)
-        tree.column('Average', width = 250)
-        tree.column('Lessons Completed', width = 250)
-
-        # Enters extracted data into table 
-        for row in student_progress:
-            tree.insert('', tk.END, values = row)
-
-        tree.pack(expand=True, fill=tk.BOTH)
-        '''
-        incrementer = 1
-        for results in student_progress:
-            result_label = tk.Label(student_progress_frame, text=results)
-            result_label.grid(row=incrementer, column=0, columnspan=2, padx=10, pady=10)
-            incrementer += 1
-        '''
-
+        # Open the student dashboard
+        student_page = TeacherPage(teacher)
+        student_page.mainloop()
+    
 if __name__ == "__main__":
     root = tk.Tk()
     home_page = HomePage(root)

@@ -21,6 +21,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from classes.student_class import Student
 from tkinter.messagebox import showinfo
+
 class StudentPage(tk.Tk):
     def __init__(self, student):
         super().__init__()
