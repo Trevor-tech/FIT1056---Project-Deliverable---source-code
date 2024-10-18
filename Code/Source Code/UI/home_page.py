@@ -18,9 +18,8 @@ from classes.receptionist_class import Receptionist
 from classes.staff_class import Staff
 from UI.student_page import StudentPage
 from UI.teacher_page import TeacherPage
-import UI.teacher_page
-import UI.receptionist_page
-from UI.manage_enrollments import ManageEnrollments
+from UI.receptionist_page import ReceptionistPage
+#from UI.manage_enrollments import ManageEnrollments
 
 class HomePage:
     def __init__(self, root):
@@ -84,6 +83,7 @@ class HomePage:
             self.error_label = tk.Label(self.frame, text="Invalid username or password", fg="red", font=("Arial", 10, "bold"))
             self.error_label.grid(row=3, column=0, columnspan=2, pady=5)
  
+    """
     def show_options(self, user):
         options_window = tk.Toplevel(self.root)
         options_window.title(f"Welcome, {user.name}")
@@ -101,11 +101,12 @@ class HomePage:
         for i, option in enumerate(options):
             btn = tk.Button(options_window, text=option, command=lambda o=option: self.select_option(o))
             btn.pack(pady=5)
-
+    """
+    """
     def select_option(self, option):
         # This method would handle the selected option
-        messagebox.showinfo("Option Selected", f"You selected: {option}")
-
+    messagebox.showinfo("Option Selected", f"You selected: {option}")
+    """
     def show_student_frame(self, student):
         # Closes the HomePage window
         self.root.destroy()  
@@ -113,7 +114,7 @@ class HomePage:
         # Open the student dashboard
         student_page = StudentPage(student)
         student_page.mainloop()
-
+    """
     def show_option(self, option):
         messagebox.showinfo("Option Selected", f"You selected: {option}")
 
@@ -122,48 +123,30 @@ class HomePage:
         new_root = tk.Tk()
         HomePage(new_root)
         new_root.mainloop()
+    """
 
     def show_receptionist_frame(self, receptionist):
-        # Clear the login frame
-        if hasattr(self, 'frame'):
-            self.frame.destroy()
+        # Closes the HomePage window
+        self.root.destroy()  
 
-        # Create a new frame for the receptionist
-        self.receptionist_frame = tk.Frame(self.root)
-        self.receptionist_frame.pack(pady=20)
-
-        tk.Label(self.receptionist_frame, text=f"Welcome, {receptionist.username}!").pack()
-
-        # Add buttons for receptionist actions
-        tk.Button(self.receptionist_frame, text="Manage Enrollments", command=lambda: self.show_manage_enrollments(receptionist)).pack(pady=5)
-        tk.Button(self.receptionist_frame, text="Schedule Appointments", command=lambda: self.show_option("Schedule Appointments")).pack(pady=5)
-        tk.Button(self.receptionist_frame, text="Generate Reports", command=lambda: self.show_option("Generate Reports")).pack(pady=5)
-
-        # Add a logout button
-        tk.Button(self.receptionist_frame, text="Logout", command=self.logout).pack(pady=10)
-
-    def show_manage_enrollments(self, receptionist):
-        # Hide the receptionist frame
-        self.receptionist_frame.pack_forget()
-
-        # Create and show the ManageEnrollments frame
-        self.manage_enrollments = ManageEnrollments(self.root, self, receptionist)
-        self.manage_enrollments.pack(expand=True, fill=tk.BOTH)
-
+        # Open the student dashboard
+        receptionist_page = ReceptionistPage(receptionist)
+        receptionist_page.mainloop()
+    """
     def show_receptionist_menu(self):
         # This method will be called from ManageEnrollments to return to the receptionist menu
         if hasattr(self, 'manage_enrollments'):
             self.manage_enrollments.pack_forget()
         if hasattr(self, 'receptionist_frame'):
             self.receptionist_frame.pack()
-
+    """
     def show_teacher_frame(self, teacher):
         # Closes the HomePage window
         self.root.destroy()  
 
         # Open the student dashboard
-        student_page = TeacherPage(teacher)
-        student_page.mainloop()
+        teacher_page = TeacherPage(teacher)
+        teacher_page.mainloop()
     
 if __name__ == "__main__":
     root = tk.Tk()

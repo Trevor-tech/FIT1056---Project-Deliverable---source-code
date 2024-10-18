@@ -35,7 +35,7 @@ class TeacherPage(tk.Tk):
         welcome_label.pack( pady=10)
 
         # Add buttons for teacher actions
-        tk.Button(self, text="Manage Courses", command=lambda: self.show_option("Manage Courses"), font=("Arial", 18)).pack(pady=5)
+        tk.Button(self, text="Manage Courses", command=lambda: self.show_option, font=("Arial", 18)).pack(pady=5)
         tk.Button(self, text="Grade Assignments", command=lambda: self.grade_assignment, font=("Arial", 18)).pack(pady=5)
         tk.Button(self, text="View Student Progress", command=self.view_student_progress, font=("Arial", 18)).pack(pady=5)
         
