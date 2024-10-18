@@ -1,0 +1,66 @@
+1. Which of the following is used to define a block of code in Python?
+a) Parentheses
+b) Brackets
+c) Indentation
+d) Curly braces
+
+2. What is the correct syntax to output "Hello World" in Python?
+a) print("Hello World")
+b) echo("Hello World")
+c) console.log("Hello World")
+d) printf("Hello World")
+
+3. What is the correct way to create a function in Python?
+a) function myFunction():
+b) def myFunction():
+c) create myFunction():
+d) func myFunction():
+
+4. Which of the following is not a valid Python data type?
+a) list
+b) int
+c) tuple
+d) real
+
+5. What is the output of the following code?
+
+print(2 * 3 ** 2)
+
+a) 36
+b) 12
+c) 18
+d) 9
+
+6. How do you insert comments in Python code?
+a) // This is a comment
+b) /* This is a comment */
+c) <!-- This is a comment -->
+d) # This is a comment
+
+7. Which of the following is a mutable data type in Python?
+a) tuple
+b) int
+c) list
+d) string
+
+8. How do you create a list in Python?
+a) list = {}
+b) list = []
+c) list = ()
+d) list = <>
+
+9. What will be the output of the following code?
+
+x = [1, 2, 3, 4]
+print(x[1:3])
+
+a) [1, 2, 3]
+b) [2, 3]
+c) [1, 3]
+d) [2, 4]
+
+10. What does the len() function do in Python?
+a) Returns the number of elements in a list
+b) Returns the last element of a list
+c) Returns the largest element in a list
+d) Returns the type of an element in a list

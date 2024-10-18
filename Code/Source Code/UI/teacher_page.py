@@ -92,7 +92,7 @@ class TeacherPage(tk.Tk):
 
                 with open(file_path, "r") as file:
                     file_content = file.read()
-                    messagebox.showinfo("File Content", file_content[:500])  # Display first 500 chars of the file
+                    messagebox.showinfo("File Content", file_content[:])  # Display first 500 chars of the file
             
             except Exception as e:
                 messagebox.showerror("Error", f"Failed to read file: {e}")
