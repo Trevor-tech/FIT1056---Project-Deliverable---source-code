@@ -13,6 +13,8 @@ sys.path.insert(0, source_code_dir)
 # Construct the path to the data directory
 data_dir = os.path.join(source_code_dir, 'data')
 
+# Set the path to the student_progress.txt file
+student_progress_file = os.path.join(data_dir, 'student_progress.txt')
 
 import tkinter as tk
 from tkinter import ttk
@@ -29,7 +31,7 @@ class StudentPage(tk.Tk):
         self.widgets()
 
     def widgets(self):
-        # Welcome Text
+        # A welcome label
         welcome_label = tk.Label(self, text=f"Welcome, {self.student.username}!", font=("Arial", 24))
         welcome_label.pack( pady=10)
 
@@ -47,96 +49,23 @@ class StudentPage(tk.Tk):
         logout_button = tk.Button(self, text="Logout", command=self.logout, font=("Arial", 18))
         logout_button.pack(pady=10)
     
-    def clear_window(self):
-        #Clears the widgets when a button is pressed
-        for widget in self.winfo_children():
-            widget.destroy()
-
+    
     def view_courses(self):
         messagebox.showinfo(" Enrolled courses")
 
     def submit_assignment(self):
-        self.clear_window()
-
-        # Set up columns for the Treeview
-        columns = ['Assignment Name', 'Submit', 'Status']
-
-        # Create the Treeview widget
-        tree_frame = ttk.Frame(self)
-        tree_frame.pack(expand=True, fill=tk.BOTH)
-
-        self.tree = ttk.Treeview(tree_frame, columns=columns, show='headings')
-        self.tree.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
-
-        # Set the column headings
-        for column in columns:
-            self.tree.heading(column, text=column)
-            self.tree.column(column, anchor="center")
-
-        # Add vertical scrollbar
-        scrollbar = ttk.Scrollbar(tree_frame, orient=tk.VERTICAL, command=self.tree.yview)
-        self.tree.configure(yscroll=scrollbar.set)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-
-        # Show assignment and submission status
-        assignments = self.load_assignments()
-        submissions = self.load_submissions()
-
-        # Insert rows in the Treeview
-        for idx, assignment in enumerate(assignments):
-            status = 'Submitted' if (self.student.username, assignment) in submissions else 'Not Submitted'
-            self.tree.insert('', idx, iid=idx, values=(assignment, '', status))
-
-            # Add a submission button
-            button = tk.Button(self.tree, text="Submission", command=lambda a=assignment: self.submit(a))
-            self.tree.set(idx, column=1) # Insert the button in the second column
-            self.tree.window_create(idx, column=1, window=button)  # Insert the button in the second column
-
-
-        # Add a back button
-        back_button = tk.Button(self, text="Back", command=self.back, font=("Arial", 18))
-        back_button.pack(pady=10, side=tk.BOTTOM)
-
-    def load_assignments(self):
-        #shows assignments tasked to student
-        assignment= os.path.join(data_dir, "assignments.txt")
-        assignments = []
-        if os.path.exists(assignment):
-            with open(assignment, 'r') as f:
-                assignments = [line.strip() for line in f.readlines()]
-        return assignments
-
-    def load_submissions(self):
-        #reads submission file and returns values
-        submissions = set()
-        submission= os.path.join(data_dir, "submissions.txt")
-        if os.path.exists(submission):
-            with open(submission, 'r') as f:
-                for line in f:
-                    username, assignment = line.strip().split(',')
-                    submissions.add((username, assignment))
-        return submissions
-
-    def submit(self, assignment):
-        # Save the submission in submission.txt
-        submission= os.path.join(data_dir, "submissions.txt")
-        with open(submission, 'a') as f:
-            f.write(f'{self.student.username},{assignment}\n')
-
-        # Update the status in the Treeview
-        for item in self.tree.get_children():
-            item_data = self.tree.item(item)
-            if item_data['values'][0] == assignment:
-                self.tree.item(item, values=(assignment, '', 'Submitted'))
-
-        messagebox.showinfo("Submit", f"Submitted {assignment}")
+        messagebox.showinfo("Submit Assignment", "Assignment submission functionality.")
 
     def check_grades(self):
-        self.clear_window()
+        # Create a new window to display the grades
+        grades_window = tk.Toplevel(self)
+        grades_window.title("Overview")
+        grades_window.geometry("720x640")
 
         # Set up Treeview
         columns = ['Assignment 1', 'Assignment 2', 'Assignment 3', 'Assignment 4', 'Test 1', 'Test 2', 'Average', 'Lessons Completed']
-        tree = ttk.Treeview(self, columns=columns, show='headings')
+
+        tree = ttk.Treeview(grades_window, columns=columns, show='headings')
         tree.pack(expand=True, fill=tk.BOTH)
 
         # Set the column headings
@@ -149,23 +78,14 @@ class StudentPage(tk.Tk):
 
         if student_data:
             # Insert the student's grades into the Treeview
-            tree.insert('', tk.END, values=student_data[2:])
+            tree.insert('', tk.END, values=student_data[2:])  # Only insert grade-related data
         else:
             messagebox.showwarning("Error", "No data found for this student")
 
-        # A button to go back to the student dashboard
-        back_button = tk.Button(self, text="Exit", command=self.back, font=("Arial", 18))
-        back_button.pack(pady=10)
-
-    def back(self):
-        #Back button will clear window and restore original student dashboard
-        self.clear_window()
-        self.widgets()
-
     def get_student_data(self, username):
-        student_progress= os.path.join(data_dir, "student_progress.txt")
-        if os.path.exists(student_progress):
-            with open(student_progress, "r") as file:
+        """Read the grades file and return the grades for the given username."""
+        if os.path.exists(student_progress_file):
+            with open(student_progress_file, "r") as file:
                 reader = csv.reader(file)
                 next(reader)  # Skip the header row
                 for row in reader:
