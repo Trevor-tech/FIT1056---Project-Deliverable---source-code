@@ -2,7 +2,7 @@ from datetime import datetime
 
 def is_date_valid(date_str: str) -> bool:
     """
-    This function validates a date string in the format 'YYYY-MM-DD'.
+    This function validates a date string in the format 'DD/MM/YYYY'.
     """
     try:
         datetime.strptime(date_str, '%d/%m/%Y')
