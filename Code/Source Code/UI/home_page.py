@@ -116,7 +116,7 @@ class HomePage:
 
         Args:
             receptionist (Receptionist): The authenticated receptionist user.
-        """
+        """ 
         # Create a new Toplevel window for the ReceptionistPage
         receptionist_window = tk.Toplevel(self.root)
         receptionist_window.title("Receptionist Page")

@@ -19,6 +19,7 @@ student_progress_file = os.path.join(data_dir, 'student_progress.txt')
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+from tkinter import filedialog
 from classes.teacher_class import Teacher
 from tkinter.messagebox import showinfo
 
@@ -31,12 +32,12 @@ class TeacherPage(tk.Tk):
 
     def widgets(self):
         # A welcome label
-        welcome_label = tk.Label(self, text=f"Welcome, {self.teacher.username}!", font=("Arial", 24))
+        welcome_label = tk.Label(self, text=f"Welcome, {self.teacher.username}! ({self.teacher.staff_info})", font=("Arial", 24))
         welcome_label.pack( pady=10)
 
         # Add buttons for teacher actions
-        tk.Button(self, text="Manage Courses", command=lambda: self.show_option, font=("Arial", 18)).pack(pady=5)
-        tk.Button(self, text="Grade Assignments", command=lambda: self.grade_assignment, font=("Arial", 18)).pack(pady=5)
+        tk.Button(self, text="Create Assignment", command= self.create_assignment, font=("Arial", 18)).pack(pady=5)
+        tk.Button(self, text="Grade Assignments", command= self.grade_assignment, font=("Arial", 18)).pack(pady=5)
         tk.Button(self, text="View Student Progress", command=self.view_student_progress, font=("Arial", 18)).pack(pady=5)
         
         # Logout button
@@ -44,11 +45,50 @@ class TeacherPage(tk.Tk):
         logout_button.pack(pady=10)
     
     
-    def manage_courses(self):
-        messagebox.showinfo("Manage Courses")
+    def create_assignment(self):
+        root = tk.Toplevel(self)
+        root.title(f'Create assignment:')
+        root.geometry("800x800")
+
+        # Creates a new window.
+        create_assignment_frame = tk.Frame(root)
+        create_assignment_frame.pack(pady=20)
+
+        # Add buttons for teacher actions
+        upload_file_label = tk.Label(create_assignment_frame, text='Upload File', font=('Arial', 24))
+        upload_file_label.pack(pady=10)
+
+        # Label to display selected file
+        self.display_file_label = tk.Label(create_assignment_frame, text="No file selected", font=("Arial", 14))
+        self.display_file_label.pack(pady=20)
+
+        # Upload button
+        upload_button = tk.Button(create_assignment_frame, text="Upload .txt File", command=self.upload_file, font=("Arial", 14))
+        upload_button.pack(pady=20)
+    
+    def upload_file(self):
+        # Open file dialog to select a .txt file
+        file_path = filedialog.askopenfilename(
+            title="Select a Text File",
+            filetypes=(("Text files", "*.txt"), ("All files", "*.*"))  # Filter only .txt files
+        )
+
+        if file_path:
+            # Display selected file path in the label
+            self.display_file_label.config(text=f'Selected file: {file_path}')
+            
+            # Allow you to open and read file
+            try:
+                with open(file_path, "r") as file:
+                    file_content = file.read()
+                    messagebox.showinfo("File Content", file_content[:500])  # Display first 500 chars of the file
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to read file: {e}")
+        else:
+            self.display_file_label(text="No file selected")
 
     def grade_assignment(self):
-        messagebox.showinfo("Grade Assignment")
+        pass
     
     def view_student_progress(self):
         """

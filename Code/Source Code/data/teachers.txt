@@ -1,2 +1,2 @@
-trevorlim, trevorlim@gmail.com, password123, Teacher, T001, 50000, Teacher of Python Programming
-yuchong, yuchong@gmail.com, password123, Teacher, T002, 50000, Teacher of Information Security
+trevorlim, trevorlim@gmail.com, password123, Teacher, T001, 50000, 1047 - Teacher of Python Programming
+yuchong, yuchong@gmail.com, password123, Teacher, T002, 50000, 1059 - Teacher of Information Security
