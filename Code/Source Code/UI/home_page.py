@@ -126,12 +126,20 @@ class HomePage:
     """
 
     def show_receptionist_frame(self, receptionist):
-        # Closes the HomePage window
-        self.root.destroy()  
+        # Create a new Toplevel window for the ReceptionistPage
+        receptionist_window = tk.Toplevel(self.root)
+        receptionist_window.title("Receptionist Page")
+        
+        # Create the ReceptionistPage, passing the new window, this HomePage instance, and the receptionist user
+        receptionist_page = ReceptionistPage(receptionist_window, self, receptionist)
+        receptionist_page.pack(fill=tk.BOTH, expand=True)
+        
+        # Close the HomePage window
+        self.root.withdraw()
 
-        # Open the student dashboard
-        receptionist_page = ReceptionistPage(receptionist)
-        receptionist_page.mainloop()
+        # Set up a protocol to exit the application when the ReceptionistPage is closed
+        receptionist_window.protocol("WM_DELETE_WINDOW", self.exit_application)
+
     """
     def show_receptionist_menu(self):
         # This method will be called from ManageEnrollments to return to the receptionist menu
@@ -148,6 +156,13 @@ class HomePage:
         teacher_page = TeacherPage(teacher)
         teacher_page.mainloop()
     
+    def show_home_page(self):
+        self.root.deiconify()  # Show the HomePage window
+
+    def exit_application(self):
+        self.root.quit()  # This will stop the mainloop
+        self.root.destroy()  # This will destroy all windows
+
 if __name__ == "__main__":
     root = tk.Tk()
     home_page = HomePage(root)
