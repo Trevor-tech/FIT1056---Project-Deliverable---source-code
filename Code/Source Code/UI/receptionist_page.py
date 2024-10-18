@@ -43,10 +43,6 @@ class ReceptionistPage(tk.Tk):
         logout_button.pack(pady=10)
     
     def show_manage_enrolments(self):
-        root = tk.Tk()
-        root.title(f'Manage Enrolments:')
-        root.geometry("800x800")
-
         # Hide current widgets to show ManageEnrolments
         #for widget in self.winfo_children():
          #   widget.pack_forget()
