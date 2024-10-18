@@ -22,6 +22,7 @@ from tkinter import messagebox
 from tkinter import filedialog
 from classes.teacher_class import Teacher
 from tkinter.messagebox import showinfo
+import shutil 
 
 class TeacherPage(tk.Tk):
     def __init__(self, teacher):
@@ -74,14 +75,25 @@ class TeacherPage(tk.Tk):
         )
 
         if file_path:
-            # Display selected file path in the label
-            self.display_file_label.config(text=f'Selected file: {file_path}')
+            # Extract the file name from the selected file path
+            file_name = os.path.basename(file_path)
             
+            # Display selected file path in the label
+            self.display_file_label.config(text=f'Selected file: {file_name}')
+
+            # Destination path where the file will be stored in the 'data' subfolder
+            destination = os.path.join(data_dir, file_name)
+
             # Allow you to open and read file
             try:
+                # Copy the selected file to the 'data' directory
+                shutil.copy(file_path, destination)
+                messagebox.showinfo("Success", f"File successfully uploaded to: {destination}")
+
                 with open(file_path, "r") as file:
                     file_content = file.read()
                     messagebox.showinfo("File Content", file_content[:500])  # Display first 500 chars of the file
+            
             except Exception as e:
                 messagebox.showerror("Error", f"Failed to read file: {e}")
         else:
