@@ -19,13 +19,23 @@ from classes.staff_class import Staff
 from UI.student_page import StudentPage
 from UI.teacher_page import TeacherPage
 from UI.receptionist_page import ReceptionistPage
-#from UI.manage_enrollments import ManageEnrollments
 
 class HomePage:
+    """
+    A class to represent the Home Page of the Empower U application.
+    """
+
     def __init__(self, root):
+        """
+        Initialize the HomePage.
+
+        Args:
+            root (tk.Tk): The root window of the application.
+        """
         self.root = root
         self.root.title("Empower U")
-        self.root.geometry("1000x1000")  # Increased height to accommodate logo
+        self.window_size = "1000x1000"  # Store the window size
+        self.root.geometry(self.window_size)  # Set the window size
 
         # Define current_dir
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -58,6 +68,9 @@ class HomePage:
         self.login_button.grid(row=2, column=0, columnspan=2, pady=10)
 
     def login(self):
+        """
+        Authenticate the user and show the appropriate frame based on user type.
+        """
         username = self.username_var.get()
         password = self.password_var.get()
 
@@ -82,72 +95,70 @@ class HomePage:
                 self.error_label.destroy()
             self.error_label = tk.Label(self.frame, text="Invalid username or password", fg="red", font=("Arial", 10, "bold"))
             self.error_label.grid(row=3, column=0, columnspan=2, pady=5)
- 
-    """
-    def show_options(self, user):
-        options_window = tk.Toplevel(self.root)
-        options_window.title(f"Welcome, {user.name}")
-        options_window.geometry("300x200")
 
-        if isinstance(user, Student):
-            options = ["View Courses", "Submit Assignment", "Check Grades"]
-        elif isinstance(user, Teacher):
-            options = ["Manage Courses", "Grade Assignments", "View Student Progress"]
-        elif isinstance(user, Receptionist):
-            options = ["Manage Enrollments", "Schedule Appointments", "Generate Reports"]
-        else:
-            options = []
-
-        for i, option in enumerate(options):
-            btn = tk.Button(options_window, text=option, command=lambda o=option: self.select_option(o))
-            btn.pack(pady=5)
-    """
-    """
-    def select_option(self, option):
-        # This method would handle the selected option
-    messagebox.showinfo("Option Selected", f"You selected: {option}")
-    """
     def show_student_frame(self, student):
+        """
+        Show the student dashboard.
+
+        Args:
+            student (Student): The authenticated student user.
+        """
         # Closes the HomePage window
         self.root.destroy()  
         
         # Open the student dashboard
         student_page = StudentPage(student)
         student_page.mainloop()
-    """
-    def show_option(self, option):
-        messagebox.showinfo("Option Selected", f"You selected: {option}")
-
-    def logout(self):
-        self.root.destroy()
-        new_root = tk.Tk()
-        HomePage(new_root)
-        new_root.mainloop()
-    """
 
     def show_receptionist_frame(self, receptionist):
-        # Closes the HomePage window
-        self.root.destroy()  
+        """
+        Show the receptionist dashboard.
 
-        # Open the student dashboard
-        receptionist_page = ReceptionistPage(receptionist)
-        receptionist_page.mainloop()
-    """
-    def show_receptionist_menu(self):
-        # This method will be called from ManageEnrollments to return to the receptionist menu
-        if hasattr(self, 'manage_enrollments'):
-            self.manage_enrollments.pack_forget()
-        if hasattr(self, 'receptionist_frame'):
-            self.receptionist_frame.pack()
-    """
+        Args:
+            receptionist (Receptionist): The authenticated receptionist user.
+        """
+        # Create a new Toplevel window for the ReceptionistPage
+        receptionist_window = tk.Toplevel(self.root)
+        receptionist_window.title("Receptionist Page")
+        receptionist_window.geometry(self.window_size)  # Set the same size as HomePage
+        
+        # Create the ReceptionistPage, passing the new window, this HomePage instance, and the receptionist user
+        receptionist_page = ReceptionistPage(receptionist_window, self, receptionist)
+        receptionist_page.pack(fill=tk.BOTH, expand=True)
+        
+        # Close the HomePage window
+        self.root.withdraw()
+
+        # Set up a protocol to exit the application when the ReceptionistPage is closed
+        receptionist_window.protocol("WM_DELETE_WINDOW", self.exit_application)
+
     def show_teacher_frame(self, teacher):
+        """
+        Show the teacher dashboard.
+
+        Args:
+            teacher (Teacher): The authenticated teacher user.
+        """
         # Closes the HomePage window
         self.root.destroy()  
 
-        # Open the student dashboard
+        # Open the teacher dashboard
         teacher_page = TeacherPage(teacher)
         teacher_page.mainloop()
     
+    def show_home_page(self):
+        """
+        Show the HomePage window.
+        """
+        self.root.deiconify()  # Show the HomePage window
+
+    def exit_application(self):
+        """
+        Exit the application by stopping the mainloop and destroying all windows.
+        """
+        self.root.quit()  # This will stop the mainloop
+        self.root.destroy()  # This will destroy all windows
+
 if __name__ == "__main__":
     root = tk.Tk()
     home_page = HomePage(root)
