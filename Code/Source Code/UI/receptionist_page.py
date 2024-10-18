@@ -45,7 +45,7 @@ class ReceptionistPage(tk.Tk):
     def show_manage_enrolments(self):
         # Hide current widgets to show ManageEnrolments
         #for widget in self.winfo_children():
-         #   widget.pack_forget()
+        #   widget.pack_forget()
 
         # Create and display instance of ManageEnrolments
         manage_enrolments_page = ManageEnrolments(self)
