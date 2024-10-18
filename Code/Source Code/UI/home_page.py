@@ -25,7 +25,8 @@ class HomePage:
     def __init__(self, root):
         self.root = root
         self.root.title("Empower U")
-        self.root.geometry("1000x1000")  # Increased height to accommodate logo
+        self.window_size = "1000x1000"  # Store the window size
+        self.root.geometry(self.window_size)  # Set the window size
 
         # Define current_dir
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -129,6 +130,7 @@ class HomePage:
         # Create a new Toplevel window for the ReceptionistPage
         receptionist_window = tk.Toplevel(self.root)
         receptionist_window.title("Receptionist Page")
+        receptionist_window.geometry(self.window_size)  # Set the same size as HomePage
         
         # Create the ReceptionistPage, passing the new window, this HomePage instance, and the receptionist user
         receptionist_page = ReceptionistPage(receptionist_window, self, receptionist)

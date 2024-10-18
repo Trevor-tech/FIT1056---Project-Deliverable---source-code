@@ -40,19 +40,26 @@ class ReceptionistPage(tk.Frame):
         for widget in self.winfo_children():
             widget.destroy()
 
+        # Create a main frame to hold all widgets
+        main_frame = tk.Frame(self)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+
         # A welcome label
-        welcome_label = tk.Label(self, text=f"Welcome, {self.receptionist_user.username}!", font=("Arial", 24, "bold"))
-        welcome_label.pack(pady=10)
+        welcome_label = tk.Label(main_frame, text=f"Welcome, {self.receptionist_user.username}!", font=("Arial", 24, "bold"))
+        welcome_label.pack(pady=20)
 
         # Add buttons for receptionist actions
-        tk.Button(self, text="Manage Enrolments", command=self.show_manage_enrollments, font=("Arial", 18, "bold")).pack(pady=5)
-        tk.Button(self, text="Schedule Appointments", command=self.schedule_appointments, font=("Arial", 18, "bold")).pack(pady=5)
-        tk.Button(self, text="Generate Reports", command=self.generate_reports, font=("Arial", 18, "bold")).pack(pady=5)
+        button_frame = tk.Frame(main_frame)
+        button_frame.pack(expand=True)
+
+        tk.Button(button_frame, text="Manage Enrolments", command=self.show_manage_enrollments, font=("Arial", 18, "bold")).pack(pady=10)
+        tk.Button(button_frame, text="Schedule Appointments", command=self.schedule_appointments, font=("Arial", 18, "bold")).pack(pady=10)
+        tk.Button(button_frame, text="Generate Reports", command=self.generate_reports, font=("Arial", 18, "bold")).pack(pady=10)
         
         # Logout button
-        logout_button = tk.Button(self, text="Logout", command=self.logout, font=("Arial", 18, "bold"))
-        logout_button.pack(pady=10)
-    
+        logout_button = tk.Button(main_frame, text="Logout", command=self.logout, font=("Arial", 18, "bold"))
+        logout_button.pack(pady=20)
+
     def show_manage_enrollments(self):
         if self.manage_enrollments_page is None:
             self.manage_enrollments_page = ManageEnrollmentsPage(self.master, self, self.receptionist_user)
