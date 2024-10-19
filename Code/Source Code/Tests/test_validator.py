@@ -46,8 +46,7 @@ class TestIsDateValid:
         """
         This function tests the invalid date formats.
 
-        It checks if the is_date_valid() function correctly identifies
-        invalid date string formats that do not match 'DD/MM/YYYY'.
+        It checks if the is_date_valid() function correctly identifies invalid date string formats that do not match 'DD/MM/YYYY'.
 
         The test cases include:
         - A date in 'YYYY-MM-DD' format
@@ -78,8 +77,7 @@ class TestIsTimeValid:
         """
         This function tests valid time formats.
 
-        It checks if the is_time_valid() function correctly identifies
-        valid time strings in the format 'HH:MM'.
+        It checks if the is_time_valid() function correctly identifies valid time strings in the format 'HH:MM'.
 
         The test cases include:
         - Midnight (00:00)
@@ -96,8 +94,7 @@ class TestIsTimeValid:
         """
         This function tests invalid time formats.
 
-        It checks if the is_time_valid() function correctly identifies
-        invalid time strings that do not match the 'HH:MM' format.
+        It checks if the is_time_valid() function correctly identifies invalid time strings that do not match the 'HH:MM' format.
 
         The test cases include:
         - A time with hours exceeding 23
@@ -113,8 +110,7 @@ class TestIsTimeValid:
         """
         This function tests invalid time formats.
 
-        It checks if the is_time_valid() function correctly identifies
-        invalid time strings that do not match the 'HH:MM' format.
+        It checks if the is_time_valid() function correctly identifies invalid time strings that do not match the 'HH:MM' format.
 
         The test cases include:
         - Times with incorrect separators
@@ -131,16 +127,14 @@ class TestIsTimeValid:
         """
         This function tests the error message output of is_time_valid().
 
-        It checks if the is_time_valid() function correctly prints an error message
-        when an invalid time format is provided.
+        It checks if the is_time_valid() function correctly prints an error message when an invalid time format is provided.
 
         The test case includes:
         - Calling is_time_valid() with an invalid time format
         - Capturing the printed output
         - Asserting that the correct error message is present in the output
 
-        This test ensures that the function not only returns False for invalid inputs,
-        but also provides informative feedback to the user.
+        This test ensures that the function not only returns False for invalid inputs,but also provides informative feedback to the user.
         """
         is_time_valid("12:30:00")
         captured = capsys.readouterr()
