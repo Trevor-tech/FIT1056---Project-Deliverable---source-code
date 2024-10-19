@@ -104,11 +104,11 @@ class ManageEnrollmentsPage(tk.Frame):
                 for line in lines:
                     parts = line.strip().split(',')
                     try:
-                        if len(parts) != 6:
+                        if len(parts) != 5:
                             raise ValueError(f"Invalid number of fields: {len(parts)}")
                         
-                        course_id, student_id, last_name, first_name, date, credit = parts
-                        self.enrollment_listbox.insert(tk.END, f"Course ID: {course_id}, Student ID: {student_id}, Last Name: {last_name}, First Name: {first_name}, Enrollment Date: {date}, Credit: {credit}")
+                        course_id, last_name, first_name, date, credit = parts
+                        self.enrollment_listbox.insert(tk.END, f"Course ID: {course_id}, Last Name: {last_name}, First Name: {first_name}, Enrollment Date: {date}, Credit: {credit}")
                     except ValueError as e:
                         print(f"Error processing line: {line.strip()}. Error: {str(e)}")
                         continue  # Skip this line and continue with the next
@@ -118,7 +118,7 @@ class ManageEnrollmentsPage(tk.Frame):
             messagebox.showerror("Error", f"An error occurred while loading enrollments: {str(e)}")
 
     def enroll_student(self):
-        """Open a new window for enrolling a student with student ID, last name, and first name fields."""
+        """Open a new window for enrolling a student with last name and first name fields."""
         self.enrol_window = tk.Toplevel(self)
         self.enrol_window.title("Enroll Student")
 
@@ -126,23 +126,19 @@ class ManageEnrollmentsPage(tk.Frame):
         self.course_id_entry = tk.Entry(self.enrol_window, font=("Forum", 10))
         self.course_id_entry.grid(row=0, column=1, padx=5, pady=5)
 
-        tk.Label(self.enrol_window, text="Student ID (12 digits):", font=("Forum", 10)).grid(row=1, column=0, padx=5, pady=5)
-        self.student_id_entry = tk.Entry(self.enrol_window, font=("Forum", 10))
-        self.student_id_entry.grid(row=1, column=1, padx=5, pady=5)
-
-        tk.Label(self.enrol_window, text="Last Name:", font=("Forum", 10)).grid(row=2, column=0, padx=5, pady=5)
+        tk.Label(self.enrol_window, text="Last Name:", font=("Forum", 10)).grid(row=1, column=0, padx=5, pady=5)
         self.last_name_entry = tk.Entry(self.enrol_window, font=("Forum", 10))
-        self.last_name_entry.grid(row=2, column=1, padx=5, pady=5)
+        self.last_name_entry.grid(row=1, column=1, padx=5, pady=5)
 
-        tk.Label(self.enrol_window, text="First Name:", font=("Forum", 10)).grid(row=3, column=0, padx=5, pady=5)
+        tk.Label(self.enrol_window, text="First Name:", font=("Forum", 10)).grid(row=2, column=0, padx=5, pady=5)
         self.first_name_entry = tk.Entry(self.enrol_window, font=("Forum", 10))
-        self.first_name_entry.grid(row=3, column=1, padx=5, pady=5)
+        self.first_name_entry.grid(row=2, column=1, padx=5, pady=5)
 
-        tk.Label(self.enrol_window, text="Date (DD/MM/YYYY):", font=("Forum", 10)).grid(row=4, column=0, padx=5, pady=5)
+        tk.Label(self.enrol_window, text="Date (DD/MM/YYYY):", font=("Forum", 10)).grid(row=3, column=0, padx=5, pady=5)
         self.date_entry = tk.Entry(self.enrol_window, font=("Forum", 10))
-        self.date_entry.grid(row=4, column=1, padx=5, pady=5)
+        self.date_entry.grid(row=3, column=1, padx=5, pady=5)
 
-        tk.Button(self.enrol_window, text="Enroll", command=self.enrol_student_confirm, font=("Forum", 10)).grid(row=5, column=0, columnspan=2, pady=10)
+        tk.Button(self.enrol_window, text="Enroll", command=self.enrol_student_confirm, font=("Forum", 10)).grid(row=4, column=0, columnspan=2, pady=10)
 
     def enrol_student_confirm(self):
         """
@@ -150,7 +146,6 @@ class ManageEnrollmentsPage(tk.Frame):
         Validates input data and adds the new enrollment to the enrollments.txt file.
         """
         course_id = self.course_id_entry.get()
-        student_id = self.student_id_entry.get()
         last_name = self.last_name_entry.get()
         first_name = self.first_name_entry.get()
         date = self.date_entry.get()
@@ -158,9 +153,6 @@ class ManageEnrollmentsPage(tk.Frame):
         # Validate input data
         if len(course_id) != 4 or not course_id.isdigit():
             messagebox.showerror("Error", "Course ID must be 4 digits", font=("Forum", 10))
-            return
-        elif len(student_id) != 12 or not student_id.isdigit():
-            messagebox.showerror("Error", "Student ID must be 12 digits", font=("Forum", 10))
             return
         elif not last_name or not first_name:
             messagebox.showerror("Error", "Both Last Name and First Name are required", font=("Forum", 10))
@@ -176,7 +168,7 @@ class ManageEnrollmentsPage(tk.Frame):
         file_path = os.path.join(data_dir, 'enrollments.txt')
         try:
             with open(file_path, "a", encoding="utf8") as f:
-                f.write(f"{course_id},{student_id},{last_name},{first_name},{date},{credit}\n")
+                f.write(f"{course_id},{last_name},{first_name},{date},{credit}\n")
             
             messagebox.showinfo("Success", "Student enrolled successfully")
             self.enrol_window.destroy()
