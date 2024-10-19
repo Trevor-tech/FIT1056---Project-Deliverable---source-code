@@ -41,6 +41,30 @@ class Student:
         self.enrollment_date = enrollment_date
         self.unit_credit = unit_credit
 
+    def enroll(self, course_id):
+        """
+        Enroll the student in the given course.
+        """
+        enrollment_file = os.path.join(data_dir, "enrollments.txt")
+        with open(enrollment_file, "a", encoding="utf8") as f:
+            f.write(f"{self.username},{course_id}\n")
+
+    def unenroll(self, course_id):
+        """
+        Unenroll the student from the given course.
+        """
+        enrollment_file = os.path.join(data_dir, "enrollments.txt")
+        if os.path.exists(enrollment_file):
+            lines = []
+            with open(enrollment_file, "r", encoding="utf8") as f:
+                lines = f.readlines()
+
+            with open(enrollment_file, "w", encoding="utf8") as f:
+                for line in lines:
+                    enrolled_username, enrolled_course_id = line.strip().split(",")
+                    if not (enrolled_username == self.username and enrolled_course_id == course_id):
+                        f.write(line)
+
     def submit_assignment(self):
         pass
 

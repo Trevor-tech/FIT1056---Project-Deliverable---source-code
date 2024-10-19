@@ -63,7 +63,141 @@ class StudentPage(tk.Tk):
             widget.destroy()
 
     def view_courses(self):
-        messagebox.showinfo(" Enrolled courses")
+        self.clear_window()
+
+        # Treeview Frame
+        tree_frame = tk.Frame(self)
+        tree_frame.pack(expand=True, fill=tk.BOTH)
+
+        # Set up columns for the Treeview
+        columns = ['Course ID', 'Course Name', 'Credits']
+
+        # Create the Treeview widget
+        self.tree = ttk.Treeview(tree_frame, columns=columns, show='headings')
+        self.tree.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
+
+        # Set the column headings
+        for column in columns:
+            self.tree.heading(column, text=column)
+            self.tree.column(column, anchor="center")
+
+        # Add vertical scrollbar for the Treeview
+        scrollbar = ttk.Scrollbar(tree_frame, orient=tk.VERTICAL, command=self.tree.yview)
+        self.tree.configure(yscroll=scrollbar.set)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Load and display courses
+        self.load_and_display_courses()
+
+        # Event binding to detect when a course is selected
+        self.tree.bind('<<TreeviewSelect>>', self.on_course_select)
+
+        # Button Frame (below Treeview)
+        button_frame = tk.Frame(self)
+        button_frame.pack(fill=tk.X, pady=10)
+
+        # Create the Enroll and Unenroll buttons (initially disabled)
+        self.enroll_button = tk.Button(button_frame, text="Enroll", state=tk.DISABLED, command=self.enroll_course)
+        self.enroll_button.pack(side=tk.LEFT, padx=5)
+
+        self.unenroll_button = tk.Button(button_frame, text="Unenroll", state=tk.DISABLED, command=self.unenroll_course)
+        self.unenroll_button.pack(side=tk.LEFT, padx=5)
+
+        # Back button to return to the dashboard
+        back_button = tk.Button(self, text="Back", command=self.back)
+        back_button.pack(pady=10)
+
+    def load_and_display_courses(self):
+        """
+        Load the courses from the text file and display them in the Treeview.
+        """
+        courses = self.load_courses()
+
+        # Insert rows in the Treeview for each course
+        for idx, course in enumerate(courses):
+            course_id, course_name, credits = course
+            self.tree.insert('', idx, iid=idx, values=(course_id, course_name, credits))
+
+    def load_courses(self):
+        """
+        Load courses from the 'courses.txt' file and return them as a list of tuples.
+        """
+        courses_file_path = os.path.join(data_dir, 'courses.txt')
+        courses = []
+        if os.path.exists(courses_file_path):
+            with open(courses_file_path, "r", encoding="utf8") as file:
+                for line in file:
+                    course_data = line.strip().split(",")
+                    if len(course_data) == 3:
+                        course_id, course_name, credits = course_data
+                        courses.append((course_id, course_name, credits))
+        else:
+            messagebox.showerror("Error", "Courses file not found.")
+        return courses
+
+    def on_course_select(self, event):
+        """
+        Event handler when a course is selected in the Treeview.
+        """
+        selected_item = self.tree.selection()
+        if selected_item:
+            # Get the course details from the selected row
+            selected_course = self.tree.item(selected_item[0], 'values')
+            self.selected_course_id = selected_course[0]  # Assuming course ID is in the first column
+
+            # Load the students' data from the file
+            students_file_path = os.path.join(data_dir, "students.txt")
+            
+            # Initially disable both buttons
+            self.enroll_button.config(state=tk.NORMAL)    # Enable the enroll button
+            self.unenroll_button.config(state=tk.DISABLED)  # Disable the unenroll button
+            
+            try:
+                with open(students_file_path, "r", encoding="utf8") as rf:
+                    lines = rf.readlines()
+                
+                # Check if the username and unit code are present
+                enrolled = False
+                for line in lines:
+                    parts = line.strip().split(",")
+                    if len(parts) > 1:  # Ensure there are enough parts
+                        username = parts[0]
+                        unit_code = parts[2]  # Adjust the index based on your file structure
+                        
+                        if username == self.student.username and unit_code == self.selected_course_id:
+                            enrolled = True
+                            break
+                
+                # Set button states based on enrollment status
+                if enrolled:
+                    self.enroll_button.config(state=tk.DISABLED)  # Disable the enroll button
+                    self.unenroll_button.config(state=tk.NORMAL)    # Enable the unenroll button
+                else:
+                    self.enroll_button.config(state=tk.NORMAL)      # Enable the enroll button
+                    self.unenroll_button.config(state=tk.DISABLED)  # Disable the unenroll button
+
+            except FileNotFoundError:
+                print(f"The file {students_file_path} does not exist.")
+
+    def enroll_course(self):
+        """
+        Enroll the student in the selected course.
+        """
+        if self.selected_course_id:
+            self.student.enroll(self.selected_course_id)
+            messagebox.showinfo("Enroll", f"Enrolled in {self.selected_course_id}")
+            self.enroll_button.config(state=tk.DISABLED)
+            self.unenroll_button.config(state=tk.NORMAL)
+
+    def unenroll_course(self):
+        """
+        Unenroll the student from the selected course.
+        """
+        if self.selected_course_id:
+            self.student.unenroll(self.selected_course_id)
+            messagebox.showinfo("Unenroll", f"Unenrolled from {self.selected_course_id}")
+            self.enroll_button.config(state=tk.NORMAL)
+            self.unenroll_button.config(state=tk.DISABLED)
     
     def submit_assignment(self):
         """

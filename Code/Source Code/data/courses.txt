@@ -1,0 +1,3 @@
+1056, Artificial Intelligence, 6
+1012, Information Safety, 6
+1005, Python Programming, 6
