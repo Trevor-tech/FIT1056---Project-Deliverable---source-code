@@ -130,7 +130,7 @@ class StudentPage(tk.Tk):
             os.makedirs(submissions_dir)  # Create the directory if it doesn't exist
 
         # Construct the path to save the PDF (e.g., username_assignment.pdf)
-        new_file_path = os.path.join(submissions_dir, f'{self.student.username}_{selected_assignment}.pdf')
+        new_file_path = os.path.join(submissions_dir)
 
         # Copy the PDF file to the submissions directory
         try:
