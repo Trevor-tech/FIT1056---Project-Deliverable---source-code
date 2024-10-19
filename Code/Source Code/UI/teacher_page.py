@@ -33,16 +33,16 @@ class TeacherPage(tk.Tk):
 
     def widgets(self):
         # A welcome label
-        welcome_label = tk.Label(self, text=f"Welcome, {self.teacher.username}! ({self.teacher.staff_info})", font=("Arial", 24))
+        welcome_label = tk.Label(self, text=f"Welcome, {self.teacher.username}! ({self.teacher.staff_info})", font=("Forum", 16))
         welcome_label.pack( pady=10)
 
         # Add buttons for teacher actions
-        tk.Button(self, text="Create Assignment", command= self.create_assignment, font=("Arial", 18)).pack(pady=5)
-        tk.Button(self, text="Grade Assignments", command= self.grade_assignment, font=("Arial", 18)).pack(pady=5)
-        tk.Button(self, text="View Student Progress", command=self.view_student_progress, font=("Arial", 18)).pack(pady=5)
+        tk.Button(self, text="Create Assignment", command= self.create_assignment, font=("Forum", 10)).pack(pady=5)
+        tk.Button(self, text="Grade Assignments", command= self.grade_assignment, font=("Forum", 10)).pack(pady=5)
+        tk.Button(self, text="View Student Progress", command=self.view_student_progress, font=("Forum", 10)).pack(pady=5)
         
         # Logout button
-        logout_button = tk.Button(self, text="Logout", command=self.logout, font=("Arial", 18))
+        logout_button = tk.Button(self, text="Logout", command=self.logout, font=("Forum", 10))
         logout_button.pack(pady=10)
     
     
@@ -51,7 +51,7 @@ class TeacherPage(tk.Tk):
 
         root = tk.Toplevel(self)
         root.title(f'Create assignment:')
-        root.geometry("800x800")
+        root.geometry("1000x1000")
 
         # Creates a new window.
         create_assignment_frame = tk.Frame(root)
@@ -59,15 +59,15 @@ class TeacherPage(tk.Tk):
         
 
         # Add buttons for teacher actions
-        upload_file_label = tk.Label(create_assignment_frame, text='Upload File', font=('Arial', 24))
+        upload_file_label = tk.Label(create_assignment_frame, text='Upload File', font=("Forum", 16))
         upload_file_label.pack(pady=10)
 
         # Label to display selected file
-        self.display_file_label = tk.Label(create_assignment_frame, text="No file selected", font=("Arial", 14))
+        self.display_file_label = tk.Label(create_assignment_frame, text="No file selected", font=("Forum", 10))
         self.display_file_label.pack(pady=20)
 
         # Upload button
-        upload_button = tk.Button(create_assignment_frame, text="Upload .pdf File", command=self.upload_file, font=("Arial", 14))
+        upload_button = tk.Button(create_assignment_frame, text="Upload .pdf File", command=self.upload_file, font=("Forum", 10))
         upload_button.pack(pady=20)
 
         # Back button
@@ -126,7 +126,7 @@ class TeacherPage(tk.Tk):
         """
         root = tk.Tk()
         root.title(f'Student Progress:')
-        root.geometry("800x800")
+        root.geometry("1000x1000")
         #self.frame.destroy()
         
         # Creates a new window.
@@ -166,9 +166,9 @@ class TeacherPage(tk.Tk):
         tree.pack(expand=True, fill=tk.BOTH)
         
     def back_to_menu(self):
-        """Return to the receptionist menu."""
+        """Return to the teacher menu."""
         # Remove window for uploading file
-        self.back_button.master.destroy()
+        self.back_button.master.withdraw()
         # Reopen teacher window
         self.deiconify()
 
