@@ -17,6 +17,7 @@ data_dir = os.path.join(source_code_dir, 'data')
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+from classes.course_class import Course
 from classes.student_class import Student
 from tkinter.messagebox import showinfo
 from tkinter import filedialog
@@ -45,8 +46,8 @@ class StudentPage(tk.Tk):
         download_assignment_button.pack(pady=5)
 
         # Submit assignment button
-        #submit_assignment_button = tk.Button(self, text="Submit Assignment", command=self.submit_assignment, font=("Forum", 10))
-        #submit_assignment_button.pack(pady=5)
+        submit_assignment_button = tk.Button(self, text="Submit Assignment", command=self.submit_assignment, font=("Forum", 10))
+        submit_assignment_button.pack(pady=5)
 
         # Check grades button
         check_grades_button = tk.Button(self, text="Check Grades", command=self.check_grades, font=("Forum", 10))
@@ -65,51 +66,94 @@ class StudentPage(tk.Tk):
         messagebox.showinfo(" Enrolled courses")
     
     def submit_assignment(self):
-        self.clear_window()
+        """
+        Open a new window for submitting assignments, where the student can select 
+        an assignment and upload a PDF file.
+        """
+        # Create a new window for submitting assignments
+        submit_window = tk.Toplevel(self)
+        submit_window.title("Submit Assignment")
+        submit_window.geometry("600x400")
 
-        # Set up columns for the Treeview
-        columns = ['Assignment Name', 'download', 'Submit', 'Status']
+        # Set up the window layout
+        label = tk.Label(submit_window, text="Select an Assignment to Submit", font=("Forum", 14))
+        label.pack(pady=10)
 
-        # Create the Treeview widget
-        tree_frame = ttk.Frame(self)
-        tree_frame.pack(expand=True, fill=tk.BOTH)
-
-        self.tree = ttk.Treeview(tree_frame, columns=columns, show='headings')
-        self.tree.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
-
-        # Set the column headings
-        for column in columns:
-            self.tree.heading(column, text=column)
-            self.tree.column(column, anchor="center")
-
-        # Add vertical scrollbar
-        scrollbar = ttk.Scrollbar(tree_frame, orient=tk.VERTICAL, command=self.tree.yview)
-        self.tree.configure(yscroll=scrollbar.set)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-
-        # Show assignment and submission status
+        # Create a Listbox to display available assignments
         assignments = self.load_assignments()
-        submissions = self.load_submissions()
 
-        # Insert rows in the Treeview
-        for idx, assignment in enumerate(assignments):
-            status = 'Submitted' if (self.student.username, assignment) in submissions else 'Not Submitted'
-            self.tree.insert('', idx, iid=idx, values=(assignment, '', status))
+        assignment_listbox = tk.Listbox(submit_window, selectmode=tk.SINGLE, font=("Forum", 12))
+        assignment_listbox.pack(pady=10, padx=20, expand=True, fill=tk.BOTH)
 
-            # Add a download button
-            download_button = tk.Button(self.tree, text="Download", command= self.download_assignment(assignment))
-            self.tree.set(idx, column=1)  # Insert the button in the second column
-            self.tree.window_create(idx, column=1, window=download_button)  # Insert the button in the second column
+        # Populate the Listbox with available assignments
+        for assignment in assignments:
+            assignment_listbox.insert(tk.END, assignment)
 
-            # Add a submission button
-            button = tk.Button(self.tree, text="Submission", command=self.submit(assignment))
-            self.tree.set(idx, column=2) # Insert the button in the second column
-            self.tree.window_create(idx, column=2, window=button)  # Insert the button in the second column
+        # Button to choose a file and submit the selected assignment
+        submit_button = tk.Button(submit_window, text="Submit PDF", command=lambda: self.submit_pdf(assignment_listbox, submit_window))
+        submit_button.pack(pady=10)
 
-        # Add a back button
-        back_button = tk.Button(self, text="Back", command=self.back, font=("Forum", 10))
+        # Back button to close the submission window
+        back_button = tk.Button(submit_window, text="Back", command=submit_window.destroy, font=("Forum", 12))
         back_button.pack(pady=10)
-    
+
+    def submit_pdf(self, assignment_listbox, submit_window):
+        """
+        Handles the submission of a PDF file for the selected assignment.
+        """
+        # Get the selected assignment from the Listbox
+        selected_index = assignment_listbox.curselection()
+        if not selected_index:
+            messagebox.showwarning("No Selection", "Please select an assignment first.")
+            return
+
+        selected_assignment = assignment_listbox.get(selected_index)
+
+        # Open a file dialog to select the PDF file
+        file_path = filedialog.askopenfilename(
+            title="Select PDF file",
+            filetypes=[("PDF files", "*.pdf")]
+        )
+
+        if not file_path:
+            messagebox.showwarning("No File", "No file was selected for submission.")
+            return
+
+        if not file_path.endswith('.pdf'):
+            messagebox.showerror("Invalid File", "Only PDF files are allowed.")
+            return
+
+        # Define the target directory for storing submissions
+        submissions_dir = os.path.join(data_dir, "submissions")
+        if not os.path.exists(submissions_dir):
+            os.makedirs(submissions_dir)  # Create the directory if it doesn't exist
+
+        # Construct the path to save the PDF (e.g., username_assignment.pdf)
+        new_file_path = os.path.join(submissions_dir, f'{self.student.username}_{selected_assignment}.pdf')
+
+        # Copy the PDF file to the submissions directory
+        try:
+            shutil.copy(file_path, new_file_path)
+
+            # Save the submission record in submissions.txt
+            self.save_submission(self.student.username, selected_assignment)
+
+            # Display a success message
+            messagebox.showinfo("Success", f"Assignment '{selected_assignment}' has been submitted successfully!")
+
+            # Close the submission window after successful submission
+            submit_window.destroy()
+        except Exception as e:
+            messagebox.showerror("Submission Failed", f"An error occurred while submitting the file: {e}")
+
+    def save_submission(self, username, assignment):
+        """
+        Save the submission record in submissions.txt.
+        """
+        submission_file = os.path.join(data_dir, "submissions.txt")
+        with open(submission_file, 'a') as f:
+            f.write(f'{username},{assignment}\n')
+
     def download_assignment(self):
         """
         Allow the user to download the selected assignment PDF file.
