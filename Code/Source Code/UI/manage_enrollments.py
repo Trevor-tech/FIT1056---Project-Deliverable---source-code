@@ -44,6 +44,7 @@ class ManageEnrollmentsPage(tk.Frame):
         self.master = master
         self.home_page = home_page
         self.receptionist_user = receptionist_user
+        self.master.geometry("1000x1000") 
 
         self.create_widgets()
 
@@ -166,7 +167,7 @@ class ManageEnrollmentsPage(tk.Frame):
             messagebox.showerror("Error", "Both Last Name and First Name are required", font=("Forum", 10))
             return
         elif not is_date_valid(date):
-            messagebox.showerror("Error", "Invalid date format. Please use DD/MM/YYYY format and ensure the date is within the five-year range starting from 2023.", font=("Forum", 10))
+            messagebox.showerror("Error", "Invalid date format. Please use DD/MM/YYYY format and ensure the date is within the five-year range starting from 2023.")
             return
 
         # Assuming credit is always 6 for now. You can add a credit entry field if needed.

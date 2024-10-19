@@ -29,6 +29,7 @@ class ReceptionistPage(tk.Frame):
         self.master = master
         self.home_page = home_page
         self.receptionist_user = receptionist_user
+        self.master.geometry("1000x1000")
 
         self.manage_enrollments_page = None  # Initialize to None
 
