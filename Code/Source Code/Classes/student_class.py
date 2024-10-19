@@ -34,10 +34,9 @@ class Student:
             print(f"Please check that the file {students_path} exists.")
             return None
 
-    def __init__(self, username, password, student_ID, unit_code, enrollment_date, unit_credit):
+    def __init__(self, username, password, unit_code, enrollment_date, unit_credit):
         self.username = username
         self.password = password
-        self.student_ID = student_ID
         self.unit_code = unit_code
         self.enrollment_date = enrollment_date
         self.unit_credit = unit_credit
