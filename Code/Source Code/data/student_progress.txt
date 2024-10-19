@@ -1,4 +1,6 @@
-student, student ID, assignment 1 (%), assignment 2 (%), assignment 3 (%), assignment 4 (%), test 1 (%), test 2 (%), average (%), lessons completed (%)
+student, unit_code, assignment 1 (%), assignment 2 (%), assignment 3 (%), assignment 4 (%), test 1 (%), test 2 (%), average (%), lessons completed (%)
 adamriz, S001, 100, 100, 100, 100, 100, 100, 100, 100
 joonkit, S002, 100, 79, 84, 50, 68, 76, 76.2, 91    
 justinbieber, S003, 10, 95, 40, 55, 100, 80, 63.3, 56
+student3,1056, 0, 0, 0, 0, 0, 0, 0, 0
+stundet4,1056, 0, 0, 0, 0, 0, 0, 0, 0

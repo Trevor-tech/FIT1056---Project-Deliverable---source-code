@@ -173,6 +173,10 @@ class ManageEnrollmentsPage(tk.Frame):
             self.load_enrollments()  # Reload the enrollments to show the new entry
         except Exception as e:
             messagebox.showerror("Error", f"Failed to enroll student: {str(e)}")
+        
+        file_path = os.path.join(data_dir, 'student_progress.txt')
+        with open(file_path, "a", encoding="utf8") as f:
+            f.write(f"{username},{course_id}, 0, 0, 0, 0, 0, 0, 0, 0\n")
 
     def unenroll_student(self):
         """
