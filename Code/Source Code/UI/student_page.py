@@ -30,21 +30,21 @@ class StudentPage(tk.Tk):
 
     def widgets(self):
         # Welcome Text
-        welcome_label = tk.Label(self, text=f"Welcome, {self.student.username}!", font=("Arial", 24))
+        welcome_label = tk.Label(self, text=f"Welcome, {self.student.username}!", font=("Forum", 16))
         welcome_label.pack( pady=10)
 
         # Buttons for students actions
-        view_courses_button = tk.Button(self, text="View Courses", command=self.view_courses, font=("Arial", 18))
+        view_courses_button = tk.Button(self, text="View Courses", command=self.view_courses, font=("Forum", 10))
         view_courses_button.pack(pady=5)
 
-        submit_assignment_button = tk.Button(self, text="Submit Assignment", command=self.submit_assignment, font=("Arial", 18))
+        submit_assignment_button = tk.Button(self, text="Submit Assignment", command=self.submit_assignment, font=("Forum", 10))
         submit_assignment_button.pack(pady=5)
 
-        check_grades_button = tk.Button(self, text="Check Grades", command=self.check_grades, font=("Arial", 18))
+        check_grades_button = tk.Button(self, text="Check Grades", command=self.check_grades, font=("Forum", 10))
         check_grades_button.pack(pady=5)
 
         # Logout button
-        logout_button = tk.Button(self, text="Logout", command=self.logout, font=("Arial", 18))
+        logout_button = tk.Button(self, text="Logout", command=self.logout, font=("Forum", 10))
         logout_button.pack(pady=10)
     
     def clear_window(self):
@@ -94,7 +94,7 @@ class StudentPage(tk.Tk):
 
 
         # Add a back button
-        back_button = tk.Button(self, text="Back", command=self.back, font=("Arial", 18))
+        back_button = tk.Button(self, text="Back", command=self.back, font=("Forum", 10))
         back_button.pack(pady=10, side=tk.BOTTOM)
 
     def load_assignments(self):
@@ -154,7 +154,7 @@ class StudentPage(tk.Tk):
             messagebox.showwarning("Error", "No data found for this student")
 
         # A button to go back to the student dashboard
-        back_button = tk.Button(self, text="Exit", command=self.back, font=("Arial", 18))
+        back_button = tk.Button(self, text="Exit", command=self.back, font=("Forum", 10))
         back_button.pack(pady=10)
 
     def back(self):
