@@ -1,2 +1,2 @@
-student, password123, 1056, 12/07/2025, 6
-joon,password123,1056,12/07/2025,6
+student,student,1056,12/07/2025,6
+student2,student2,1056,12/07/2025,6
