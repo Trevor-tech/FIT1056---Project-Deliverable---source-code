@@ -52,9 +52,6 @@ class Teacher(Staff):
     def __init__(self, username, email, password, role, teacher_ID, salary, staff_info):
         super().__init__(username, email, password, role, teacher_ID, salary, staff_info)
 
-    def create_assignment(self):
-        print('Upload t')
-
     def grade_assignment(self):
         pass
 
