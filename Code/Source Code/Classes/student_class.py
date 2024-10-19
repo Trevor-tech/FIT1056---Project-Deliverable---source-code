@@ -21,24 +21,26 @@ class Student:
             with open(students_path, "r", encoding="utf8") as rf:
                 lines = rf.readlines()
             for line in lines:
-                username, email, password, student_ID = [item.strip() for item in line.strip("\n").split(",")]
+                username, password, unit_code, enrollment_date, unit_credit = [item.strip() for item in line.strip("\n").split(",")]
                 
                 print(f"Checking: {username}, Input: {input_username}")  # Debug print
         
                 if input_username == username:
                     if input_password == password:
-                        return Student(username, email, password, student_ID)
+                        return Student(username, password, unit_code, enrollment_date, unit_credit)
             print(f"Username {input_username} not found in file")  # Debug print
             return None
         else:
             print(f"Please check that the file {students_path} exists.")
             return None
 
-    def __init__(self, username, email, password, student_ID):
+    def __init__(self, username, password, student_ID, unit_code, enrollment_date, unit_credit):
         self.username = username
-        self.email = email
         self.password = password
         self.student_ID = student_ID
+        self.unit_code = unit_code
+        self.enrollment_date = enrollment_date
+        self.unit_credit = unit_credit
 
     def submit_assignment(self):
         pass
@@ -47,5 +49,4 @@ class Student:
         pass
 
 if __name__ == "__main__":
-    print("Testing willeykong:", Student.authenticate("willeykong", "password123"))
-    print("Testing adamriz:", Student.authenticate("adamriz", "password123"))
+    pass
