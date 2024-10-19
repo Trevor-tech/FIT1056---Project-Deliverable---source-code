@@ -101,7 +101,7 @@ class StudentPage(tk.Tk):
         """
         Handles the submission of a PDF file for the selected assignment.
         """
-        # Get the selected assignment from the Listbox
+        # Get the selected assignment
         selected_index = assignment_listbox.curselection()
         if not selected_index:
             messagebox.showwarning("No Selection", "Please select an assignment first.")
@@ -115,6 +115,7 @@ class StudentPage(tk.Tk):
             filetypes=[("PDF files", "*.pdf")]
         )
 
+        # Error messages.
         if not file_path:
             messagebox.showwarning("No File", "No file was selected for submission.")
             return
@@ -163,22 +164,23 @@ class StudentPage(tk.Tk):
         download_window.title("Download Assignments")
         download_window.geometry("600x400")
 
+        
         # Set up columns for the Treeview
         columns = ['Assignment Name', 'Download']
-
+        
         # Create the Treeview widget
         tree_frame = ttk.Frame(download_window)
         tree_frame.pack(expand=True, fill=tk.BOTH)
 
         tree = ttk.Treeview(tree_frame, columns=columns, show='headings')
         tree.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
-
-        # Set the column headings
+        
+        # Set headers of colummns
         tree.heading('Assignment Name', text='Assignment Name')
         tree.column('Assignment Name', anchor="center", width=400)
         tree.heading('Download', text='Download')
         tree.column('Download', anchor="center", width=100)
-
+        
         # Add vertical scrollbar
         scrollbar = ttk.Scrollbar(tree_frame, orient=tk.VERTICAL, command=tree.yview)
         tree.configure(yscroll=scrollbar.set)
@@ -188,11 +190,11 @@ class StudentPage(tk.Tk):
         assignments = self.load_assignments()         
         
         # Insert rows in the Treeview for each assignment
-        for idx, assignment in enumerate(assignments):
+        for assignment in enumerate(assignments):
             # Insert the assignment name
             tree.insert('', tk.END, values=(assignment, 'Download'))
 
-        # 
+        # when selected row is clicked once, it will call download_selected_assignment()
         tree.bind('<ButtonRelease-1>', lambda event: self.download_selected_assignment(event, tree))
 
         # Back button
@@ -215,7 +217,7 @@ class StudentPage(tk.Tk):
         """
         This function handles the downloading of the selected assignment using a single click.
         """
-        # Get the selected item (assignment) from the Treeview
+        # Get the selected assignment from the Treeview
         selected_item = tree.focus()
         if not selected_item:
             messagebox.showerror("Error", "No assignment selected.")
@@ -229,6 +231,7 @@ class StudentPage(tk.Tk):
         # Construct the path to the assignment PDF file
         pdf_file_path = os.path.join(pdf_subfolder, assignment)
 
+        # When file path does not exist.
         if not os.path.exists(pdf_file_path):
             messagebox.showerror("Error", f"The assignment file '{assignment}' does not exist.")
             return
@@ -240,6 +243,7 @@ class StudentPage(tk.Tk):
             filetypes=[("PDF files", "*.pdf"), ("All files", "*.*")]
         )
 
+        # Displaying informative messages.
         if save_location:
             try:
                 # Copy the PDF file to the selected location
