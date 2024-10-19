@@ -195,12 +195,12 @@ class ManageEnrollmentsPage(tk.Frame):
 
     def remove_enrollment(self, index):
         """
-        Remove an enrollment from the enrollments.txt file.
+        Remove a student from the students.txt file.
         
         Args:
             index (int): The index of the enrollment to remove.
         """
-        file_path = os.path.join(data_dir, 'enrollments.txt')
+        file_path = os.path.join(data_dir, 'students.txt')
         try:
             with open(file_path, "r") as f:
                 lines = f.readlines()

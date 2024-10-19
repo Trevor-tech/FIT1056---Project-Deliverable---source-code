@@ -79,7 +79,7 @@ class HomePage():
         
         # If staff authentication fails, try student authentication
         if user is None:
-            user = Student.authenticate(username, password)
+            user = Student.authenticate(username, password) 
 
         if user:
             if isinstance(user, Receptionist):
