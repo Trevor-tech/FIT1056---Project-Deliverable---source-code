@@ -40,7 +40,7 @@ class HomePage:
         # Define current_dir
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
-        # Load and display the logo
+        # Load and display the logo 
         self.logo_image = tk.PhotoImage(file=os.path.join(current_dir, "EmpowerU_logo.png")) # Image was AI generated (ChatGPT, 2024).
         self.logo_label = tk.Label(self.root, image=self.logo_image, width=400, height=400)
         self.logo_label.pack(pady=10)

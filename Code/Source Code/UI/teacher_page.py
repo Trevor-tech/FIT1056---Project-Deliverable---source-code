@@ -47,6 +47,8 @@ class TeacherPage(tk.Tk):
     
     
     def create_assignment(self):
+        self.withdraw()
+
         root = tk.Toplevel(self)
         root.title(f'Create assignment:')
         root.geometry("800x800")
@@ -54,6 +56,7 @@ class TeacherPage(tk.Tk):
         # Creates a new window.
         create_assignment_frame = tk.Frame(root)
         create_assignment_frame.pack(pady=20)
+        
 
         # Add buttons for teacher actions
         upload_file_label = tk.Label(create_assignment_frame, text='Upload File', font=('Arial', 24))
@@ -66,6 +69,10 @@ class TeacherPage(tk.Tk):
         # Upload button
         upload_button = tk.Button(create_assignment_frame, text="Upload .txt File", command=self.upload_file, font=("Arial", 14))
         upload_button.pack(pady=20)
+
+        # Back button
+        self.back_button = tk.Button(create_assignment_frame, text="Back", command=self.back_to_menu)
+        self.back_button.pack(padx=10, pady=10)
     
     def upload_file(self):
         # Open file dialog to select a .txt file
@@ -147,6 +154,10 @@ class TeacherPage(tk.Tk):
 
         tree.pack(expand=True, fill=tk.BOTH)
         
+    def back_to_menu(self):
+        """Return to the receptionist menu."""
+        self.back_button.master.destroy()
+        self.deiconify()
 
     def logout(self):
         self.destroy()

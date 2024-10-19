@@ -1,2 +1,3 @@
 adamriz, adamriz@gmail.com, password123, S001
 joon, joon@gmail.com, password123, S002
+Justinbieber, justin@gmail.com, password123, S002

@@ -52,12 +52,12 @@ class ReceptionistPage(tk.Frame):
         button_frame = tk.Frame(main_frame)
         button_frame.pack(expand=True)
 
-        tk.Button(button_frame, text="Manage Enrolments", command=self.show_manage_enrollments, font=("Arial", 18, "bold")).pack(pady=10)
-        tk.Button(button_frame, text="Schedule Appointments", command=self.schedule_appointments, font=("Arial", 18, "bold")).pack(pady=10)
-        tk.Button(button_frame, text="Generate Reports", command=self.generate_reports, font=("Arial", 18, "bold")).pack(pady=10)
+        tk.Button(button_frame, text="Manage Enrolments", command=self.show_manage_enrollments, font=("Arial", 18)).pack(pady=10)
+        tk.Button(button_frame, text="Schedule Appointments", command=self.schedule_appointments, font=("Arial", 18)).pack(pady=10)
+        tk.Button(button_frame, text="Generate Reports", command=self.generate_reports, font=("Arial", 18)).pack(pady=10)
         
         # Logout button
-        logout_button = tk.Button(main_frame, text="Logout", command=self.logout, font=("Arial", 18, "bold"))
+        logout_button = tk.Button(button_frame, text="Logout", command=self.logout, font=("Arial", 18))
         logout_button.pack(pady=20)
 
     def show_manage_enrollments(self):
