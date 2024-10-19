@@ -119,7 +119,7 @@ class StudentPage(tk.Tk):
         download_window.title("Download Assignments")
         download_window.geometry("600x400")
 
-         # Set up columns for the Treeview
+        # Set up columns for the Treeview
         columns = ['Assignment Name', 'Download']
 
         # Create the Treeview widget

@@ -168,7 +168,7 @@ class TeacherPage(tk.Tk):
     def back_to_menu(self):
         """Return to the teacher menu."""
         # Remove window for uploading file
-        self.back_button.master.withdraw()
+        self.back_button.master.master.destroy()
         # Reopen teacher window
         self.deiconify()
 
