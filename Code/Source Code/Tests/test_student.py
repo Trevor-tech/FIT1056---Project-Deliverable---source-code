@@ -84,20 +84,10 @@ def test_student_creation():
     assert student.student_ID == "S003"
 
 def test_submit_assignment():
-    """
-    This is a test which tests the submit_assignment method of the Student class.
-    
-    Verifies that the method returns None (placeholder implementation).
-    """
     student = Student("testuser", "test@example.com", "testpass", "S003")
     assert student.submit_assignment() is None
 
 def test_view_feedback():
-    """
-    This is a test which tests the view_feedback method of the Student class.
-    
-    Checks that the method returns None (placeholder implementation).
-    """
     student = Student("testuser", "test@example.com", "testpass", "S003")
     assert student.view_feedback() is None
 
