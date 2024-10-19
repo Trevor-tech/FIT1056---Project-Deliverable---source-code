@@ -1,1 +1,2 @@
 willeykong, willeykong@gmail.com, password123, Receptionist, R001, 50000, Receptionist of Student Services Coordination
+admin, admin@test.com, admin, Admin, R000, 0, Admin

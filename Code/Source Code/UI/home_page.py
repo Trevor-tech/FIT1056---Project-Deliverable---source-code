@@ -22,7 +22,7 @@ from UI.receptionist_page import ReceptionistPage
 
 class HomePage:
     """
-    A class to represent the Home Page of the Empower U application.
+    Home Page of the EmpowerU application.
     """
 
     def __init__(self, root):
@@ -33,7 +33,7 @@ class HomePage:
             root (tk.Tk): The root window of the application.
         """
         self.root = root
-        self.root.title("Empower U")
+        self.root.title("EmpowerU")
         self.window_size = "1000x1000"  # Store the window size
         self.root.geometry(self.window_size)  # Set the window size
 
@@ -51,20 +51,20 @@ class HomePage:
 
         # Enter username.
         self.username_var = tk.StringVar()
-        self.username_label = tk.Label(self.frame, text="Username:")
+        self.username_label = tk.Label(self.frame, text="Username:", font=("Forum", 10))
         self.username_label.grid(row=0, column=0, padx=5, pady=5)
-        self.username_entry = tk.Entry(self.frame, textvariable=self.username_var)
+        self.username_entry = tk.Entry(self.frame, textvariable=self.username_var, font=("Forum", 10))
         self.username_entry.grid(row=0, column=1, padx=5, pady=5)
 
         # Enter password.
         self.password_var = tk.StringVar()
-        self.password_label = tk.Label(self.frame, text="Password:")
+        self.password_label = tk.Label(self.frame, text="Password:", font=("Forum", 10))
         self.password_label.grid(row=1, column=0, padx=5, pady=5)
-        self.password_entry = tk.Entry(self.frame, show="*", textvariable=self.password_var)
+        self.password_entry = tk.Entry(self.frame, show="*", textvariable=self.password_var, font=("Forum", 10))
         self.password_entry.grid(row=1, column=1, padx=5, pady=5)
 
         # Login button.
-        self.login_button = tk.Button(self.frame, text="Login", command=self.login)
+        self.login_button = tk.Button(self.frame, text="Login", command=self.login, font=("Forum", 10))
         self.login_button.grid(row=2, column=0, columnspan=2, pady=10)
 
     def login(self):
@@ -93,7 +93,7 @@ class HomePage:
         else:
             if hasattr(self, 'error_label'):
                 self.error_label.destroy()
-            self.error_label = tk.Label(self.frame, text="Invalid username or password", fg="red", font=("Arial", 10, "bold"))
+            self.error_label = tk.Label(self.frame, text="Invalid username or password", fg="red", font=("Forum", 10))
             self.error_label.grid(row=3, column=0, columnspan=2, pady=5)
 
     def show_student_frame(self, student):
@@ -120,7 +120,6 @@ class HomePage:
         # Create a new Toplevel window for the ReceptionistPage
         receptionist_window = tk.Toplevel(self.root)
         receptionist_window.title("Receptionist Page")
-        receptionist_window.geometry(self.window_size)  # Set the same size as HomePage
         
         # Create the ReceptionistPage, passing the new window, this HomePage instance, and the receptionist user
         receptionist_page = ReceptionistPage(receptionist_window, self, receptionist)
