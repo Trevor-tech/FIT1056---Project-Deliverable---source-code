@@ -48,14 +48,14 @@ class ManageEnrollmentsPage(tk.Frame):
 
     def create_widgets(self):
         """Create and place the widgets for the Manage Enrollments page."""
-        self.enrolment_label = tk.Label(self, text="Manage Enrollments")
+        self.enrolment_label = tk.Label(self, text="Manage Enrollments", font=("Forum", 10))
         self.enrolment_label.pack(padx=10, pady=10)
 
         self.enrollment_frame = tk.Frame(self)
         self.enrollment_frame.pack(padx=10, pady=10)
 
         # Increase the width of the listbox
-        self.enrollment_listbox = tk.Listbox(self.enrollment_frame, width=80)  # Changed from 50 to 80
+        self.enrollment_listbox = tk.Listbox(self.enrollment_frame, width=80, font=("Forum", 10))  # Changed from 50 to 80
         self.enrollment_listbox.pack(side=tk.LEFT, padx=10, pady=10)
 
         self.enrollment_scrollbar = tk.Scrollbar(self.enrollment_frame)
@@ -64,31 +64,31 @@ class ManageEnrollmentsPage(tk.Frame):
         self.enrollment_listbox.config(yscrollcommand=self.enrollment_scrollbar.set)
         self.enrollment_scrollbar.config(command=self.enrollment_listbox.yview)
 
-        self.enrol_button = tk.Button(self, text="Enroll Student", command=self.enroll_student)
+        self.enrol_button = tk.Button(self, text="Enroll Student", command=self.enroll_student, font=("Forum", 10))
         self.enrol_button.pack(padx=10, pady=10)
 
-        self.unenrol_button = tk.Button(self, text="Unenroll Student", command=self.unenroll_student)
+        self.unenrol_button = tk.Button(self, text="Unenroll Student", command=self.unenroll_student, font=("Forum", 10))
         self.unenrol_button.pack(padx=10, pady=10)
 
-        self.back_button = tk.Button(self, text="Back", command=self.back_to_menu)
+        self.back_button = tk.Button(self, text="Back", command=self.back_to_menu, font=("Forum", 10))
         self.back_button.pack(padx=10, pady=10)
 
     def show(self):
-        """Display the Manage Enrollments page and load the enrollments."""
+        """Display existing enrolmments"""
         self.pack()
         self.load_enrollments()
 
     def hide(self):
-        """Hide the Manage Enrollments page."""
+        """Hide Manage Enrollments page"""
         self.pack_forget()
 
     def load_enrollments(self):
-        """Load and display the enrollments from the enrollments.txt file."""
+        """Load existing enrollments from enrollments.txt"""
         self.enrollment_listbox.delete(0, tk.END)  # Clear existing entries
         try:
             file_path = os.path.join(data_dir, "enrollments.txt")
             if not os.path.exists(file_path):
-                messagebox.showwarning("File Not Found", f"The enrollments.txt file was not found at {os.path.abspath(file_path)}")
+                messagebox.showwarning("File Not Found", f"The enrollments.txt file was not found at {os.path.abspath(file_path)}", font=("Forum", 10))
                 return
 
             with open(file_path, "r") as f:
@@ -114,25 +114,25 @@ class ManageEnrollmentsPage(tk.Frame):
         self.enrol_window = tk.Toplevel(self)
         self.enrol_window.title("Enroll Student")
 
-        self.course_id_label = tk.Label(self.enrol_window, text="Enter course ID (4 digits):")
+        self.course_id_label = tk.Label(self.enrol_window, text="Enter course ID (4 digits):", font=("Forum", 10))
         self.course_id_label.pack(padx=10, pady=10)
 
         self.course_id_entry = tk.Entry(self.enrol_window, width=4)
         self.course_id_entry.pack(padx=10, pady=10)
 
-        self.name_label = tk.Label(self.enrol_window, text="Enter student name:")
+        self.name_label = tk.Label(self.enrol_window, text="Enter student name:", font=("Forum", 10))
         self.name_label.pack(padx=10, pady=10)
 
         self.name_entry = tk.Entry(self.enrol_window)
         self.name_entry.pack(padx=10, pady=10)
 
-        self.date_label = tk.Label(self.enrol_window, text="Enter enrollment date (DD/MM/YYYY):")
+        self.date_label = tk.Label(self.enrol_window, text="Enter enrollment date (DD/MM/YYYY):", font=("Forum", 10))
         self.date_label.pack(padx=10, pady=10)
 
         self.date_entry = tk.Entry(self.enrol_window)
         self.date_entry.pack(padx=10, pady=10)
 
-        self.enrol_button = tk.Button(self.enrol_window, text="Enroll", command=self.enrol_student_confirm)
+        self.enrol_button = tk.Button(self.enrol_window, text="Enroll", command=self.enrol_student_confirm, font=("Forum", 10))
         self.enrol_button.pack(padx=10, pady=10)
 
     def enrol_student_confirm(self):
@@ -142,10 +142,10 @@ class ManageEnrollmentsPage(tk.Frame):
         date = self.date_entry.get()
 
         if len(course_id) != 4 or not course_id.isdigit():
-            messagebox.showerror("Error", "Course ID must be 4 digits")
+            messagebox.showerror("Error", "Course ID must be 4 digits", font=("Forum", 10))
             return
         elif not is_date_valid(date):
-            messagebox.showerror("Error", "Invalid date format. Please use DD/MM/YYYY format and ensure the date is within the five-year range starting from 2023.")
+            messagebox.showerror("Error", "Invalid date format. Please use DD/MM/YYYY format and ensure the date is within the five-year range starting from 2023.", font=("Forum", 10))
             return
 
         # Assuming credit is always 6 for now. You can add a credit entry field if needed.
@@ -190,7 +190,7 @@ class ManageEnrollmentsPage(tk.Frame):
             with open(file_path, "w") as f:
                 f.writelines(lines)
         except Exception as e:
-            messagebox.showerror("Error", f"Failed to unenroll student: {str(e)}")
+            messagebox.showerror("Error", f"Failed to unenroll student: {str(e)}", font=("Forum", 10))
 
     def back_to_menu(self):
         """Return to the receptionist menu."""
