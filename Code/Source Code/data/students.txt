@@ -2,3 +2,7 @@ student,student,1056,12/07/2025,6
 student2,student2,1056,12/07/2025,6
 student3,student3,1056,12/07/2025,6
 stundet4,stundet4,1056,12/07/2025,6
+student5,student5,1005,12/07/2025,6
+student6,student6,1005,12/07/2025,6
+student7,student7,1012,12/07/2025,6
+student8,student8,1012,12/07/2025,6

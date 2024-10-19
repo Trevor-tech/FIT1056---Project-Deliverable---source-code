@@ -254,17 +254,21 @@ class TeacherPage(tk.Tk):
         root.geometry("1000x1000")
         #self.frame.destroy()
         
+        # Extracting course ID from teacher's staff info
+        teacher_course_id = self.teacher.staff_info.split("-")[0].strip()
+        
+        # Filtering student with matching course ID
+        filtered_student_progress = [student for student in self.teacher.student_progress_details() if student[1].strip() == teacher_course_id]
+        
         # Creates a new window.
         student_progress_frame = tk.Frame(self)
         student_progress_frame.pack(pady=20)
 
-        student_progress = Teacher.student_progress_details(self) # Calls method from Teacher class which extracts stored data of student progress.
-
         # Display table
-        columns = ('Student', 'Student ID', 'A1', 'A2', 'A3', 'A4', 'T1', 'T2', 'Average', 'Lessons Completed')
+        columns = ('Student', 'Course ID', 'A1', 'A2', 'A3', 'A4', 'T1', 'T2', 'Average', 'Lessons Completed')
         tree = ttk.Treeview(root, columns=columns, show="headings")
         tree.heading('Student', text='Student Name')
-        tree.heading('Student ID', text='Student ID')
+        tree.heading('Course ID', text='Course ID')
         tree.heading('A1', text='A1 (%)')
         tree.heading('A2', text='A2 (%)')
         tree.heading('A3', text='A3 (%)')
@@ -273,8 +277,10 @@ class TeacherPage(tk.Tk):
         tree.heading('T2', text='T2 (%)')
         tree.heading('Average', text='Average Mark (%)')
         tree.heading('Lessons Completed', text='Lessons Completed (%)')
+        
+        # Adjusting size
         tree.column('Student', width = 150)
-        tree.column('Student ID', width = 150)
+        tree.column('Course ID', width = 150)
         tree.column('A1', width = 50)
         tree.column('A2', width = 50)
         tree.column('A3', width = 50)
@@ -285,7 +291,7 @@ class TeacherPage(tk.Tk):
         tree.column('Lessons Completed', width = 250)
 
         # Enters extracted data into table 
-        for row in student_progress:
+        for row in filtered_student_progress:
             tree.insert('', tk.END, values = row)
 
         tree.pack(expand=True, fill=tk.BOTH)
