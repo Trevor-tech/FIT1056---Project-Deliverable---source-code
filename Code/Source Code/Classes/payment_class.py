@@ -4,6 +4,26 @@ import sys
 from classes.receptionist_class import Receptionist
 
 class TeacherSalary:
+    """
+    Represents a teacher's salary information within a school management system.
+
+    Class Attributes:
+        teachers_path (str): Path to the teachers' data file.
+
+    Attributes:
+        username (str): The user's username.
+        email (str): The user's email address.
+        recept_id (str): The recept ID.
+        salary (str): The teacher's salary.
+        staff_info (str): Additional staff information.
+
+    Args:
+        username (str): The user's username.
+        email (str): The user's email address.
+        recept_id (str): The recept ID.
+        salary (str): The teacher's salary.
+        staff_info (str): Additional staff information.
+    """
     teachers_path = "./Data/teachers.txt"
 
     def __init__(self, username, email, recept_id, salary, staff_info):
