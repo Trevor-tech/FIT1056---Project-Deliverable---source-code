@@ -22,6 +22,7 @@ from tkinter import messagebox
 from tkinter import filedialog
 from classes.teacher_class import Teacher
 from tkinter.messagebox import showinfo
+import PyPDF2
 import shutil 
 
 class TeacherPage(tk.Tk):
@@ -67,7 +68,7 @@ class TeacherPage(tk.Tk):
         self.display_file_label.pack(pady=20)
 
         # Upload button
-        upload_button = tk.Button(create_assignment_frame, text="Upload .txt File", command=self.upload_file, font=("Arial", 14))
+        upload_button = tk.Button(create_assignment_frame, text="Upload .pdf File", command=self.upload_file, font=("Arial", 14))
         upload_button.pack(pady=20)
 
         # Back button
@@ -77,8 +78,8 @@ class TeacherPage(tk.Tk):
     def upload_file(self):
         # Open file dialog to select a .txt file
         file_path = filedialog.askopenfilename(
-            title="Select a Text File",
-            filetypes=(("Text files", "*.txt"), ("All files", "*.*"))  # Filter only .txt files
+            title="Select a pdf File",
+            filetypes=(("Pdf files", "*.pdf"), ("All files", "*.*"))  # Filter only .txt files
         )
 
         if file_path:
@@ -97,10 +98,21 @@ class TeacherPage(tk.Tk):
                 shutil.copy(file_path, destination)
                 messagebox.showinfo("Success", f"File successfully uploaded to: {destination}")
 
-                with open(file_path, "r") as file:
-                    file_content = file.read()
-                    messagebox.showinfo("File Content", file_content[:])  # Display first 500 chars of the file
-            
+                # Read and extract content from the PDF file of assignment.
+                pdf_text = ""
+                with open(file_path, "rb") as file:
+                    pdf_reader = PyPDF2.PdfReader(file)
+                    # Iterate over the pages of the pdf file.
+                    for page_num in range(len(pdf_reader.pages)):
+                        pdf_page = pdf_reader.pages[page_num]
+                        pdf_text += pdf_page.extract_text()
+                
+                # Display preview of submitted file for teacher to confirm.
+                if pdf_text:
+                    messagebox.showinfo("File Content Preview (Note, not all contents of the pdf file may be displayed.)", pdf_text[:])
+                else:
+                    messagebox.showwarning("Warning", "No text content found in the PDF file.")
+
             except Exception as e:
                 messagebox.showerror("Error", f"Failed to read file: {e}")
         else:
