@@ -52,7 +52,7 @@ class TeacherPage(tk.Tk):
 
         root = tk.Toplevel(self)
         root.title(f'Create assignment:')
-        root.geometry("800x800")
+        root.geometry("1000x1000")
 
         # Creates a new window.
         create_assignment_frame = tk.Frame(root)
@@ -127,7 +127,7 @@ class TeacherPage(tk.Tk):
         """
         root = tk.Tk()
         root.title(f'Student Progress:')
-        root.geometry("800x800")
+        root.geometry("1000x1000")
         #self.frame.destroy()
         
         # Creates a new window.
@@ -167,7 +167,7 @@ class TeacherPage(tk.Tk):
         tree.pack(expand=True, fill=tk.BOTH)
         
     def back_to_menu(self):
-        """Return to the receptionist menu."""
+        """Return to the teacher menu."""
         # Remove window for uploading file
         self.back_button.master.destroy()
         # Reopen teacher window
