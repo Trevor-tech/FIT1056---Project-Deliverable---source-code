@@ -19,6 +19,9 @@ from tkinter import ttk
 from tkinter import messagebox
 from classes.student_class import Student
 from tkinter.messagebox import showinfo
+from tkinter import filedialog
+import PyPDF2
+import shutil 
 
 class StudentPage(tk.Tk):
     def __init__(self, student):
@@ -37,9 +40,15 @@ class StudentPage(tk.Tk):
         view_courses_button = tk.Button(self, text="View Courses", command=self.view_courses, font=("Forum", 10))
         view_courses_button.pack(pady=5)
 
-        submit_assignment_button = tk.Button(self, text="Submit Assignment", command=self.submit_assignment, font=("Forum", 10))
-        submit_assignment_button.pack(pady=5)
+        # Download assignment button
+        download_assignment_button = tk.Button(self, text="Download Assignment", command=self.download_assignment, font=("Forum", 10))
+        download_assignment_button.pack(pady=5)
 
+        # Submit assignment button
+        #submit_assignment_button = tk.Button(self, text="Submit Assignment", command=self.submit_assignment, font=("Forum", 10))
+        #submit_assignment_button.pack(pady=5)
+
+        # Check grades button
         check_grades_button = tk.Button(self, text="Check Grades", command=self.check_grades, font=("Forum", 10))
         check_grades_button.pack(pady=5)
 
@@ -54,12 +63,12 @@ class StudentPage(tk.Tk):
 
     def view_courses(self):
         messagebox.showinfo(" Enrolled courses")
-
+    
     def submit_assignment(self):
         self.clear_window()
 
         # Set up columns for the Treeview
-        columns = ['Assignment Name', 'Submit', 'Status']
+        columns = ['Assignment Name', 'download', 'Submit', 'Status']
 
         # Create the Treeview widget
         tree_frame = ttk.Frame(self)
@@ -87,23 +96,119 @@ class StudentPage(tk.Tk):
             status = 'Submitted' if (self.student.username, assignment) in submissions else 'Not Submitted'
             self.tree.insert('', idx, iid=idx, values=(assignment, '', status))
 
-            # Add a submission button
-            button = tk.Button(self.tree, text="Submission", command=lambda a=assignment: self.submit(a))
-            self.tree.set(idx, column=1) # Insert the button in the second column
-            self.tree.window_create(idx, column=1, window=button)  # Insert the button in the second column
+            # Add a download button
+            download_button = tk.Button(self.tree, text="Download", command= self.download_assignment(assignment))
+            self.tree.set(idx, column=1)  # Insert the button in the second column
+            self.tree.window_create(idx, column=1, window=download_button)  # Insert the button in the second column
 
+            # Add a submission button
+            button = tk.Button(self.tree, text="Submission", command=self.submit(assignment))
+            self.tree.set(idx, column=2) # Insert the button in the second column
+            self.tree.window_create(idx, column=2, window=button)  # Insert the button in the second column
 
         # Add a back button
         back_button = tk.Button(self, text="Back", command=self.back, font=("Forum", 10))
-        back_button.pack(pady=10, side=tk.BOTTOM)
+        back_button.pack(pady=10)
+    
+    def download_assignment(self):
+        """
+        Allow the user to download the selected assignment PDF file.
+        """
+        # Create a new window for downloading assignments
+        download_window = tk.Toplevel(self)
+        download_window.title("Download Assignments")
+        download_window.geometry("600x400")
 
+         # Set up columns for the Treeview
+        columns = ['Assignment Name', 'Download']
+
+        # Create the Treeview widget
+        tree_frame = ttk.Frame(download_window)
+        tree_frame.pack(expand=True, fill=tk.BOTH)
+
+        tree = ttk.Treeview(tree_frame, columns=columns, show='headings')
+        tree.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
+
+        # Set the column headings
+        for column in columns:
+            tree.heading(column, text=column)
+            tree.column(column, anchor="center")
+
+        # Add vertical scrollbar
+        scrollbar = ttk.Scrollbar(tree_frame, orient=tk.VERTICAL, command=tree.yview)
+        tree.configure(yscroll=scrollbar.set)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Load assignment files from the 'assignments' folder
+        assignments = self.load_assignments()         
+        
+        # Insert rows in the Treeview for each assignment
+        for idx, assignment in enumerate(assignments):
+            # Insert the assignment name
+            tree.insert('', idx, iid=idx, values=(assignment, ''))
+
+            # Create a button and pack it into the frame
+            download_button = tk.Button(tree_frame, text="Download", command=lambda a=assignment: self.download_selected_assignment(a))
+            download_button.pack(side=tk.TOP, padx=5, pady=2)
+
+        # Optionally, if you want to associate the button with the assignment
+        tree.item(idx, tags=(assignment,))
+
+        # Add a back button to close the window and return to the previous one
+        back_button = tk.Button(download_window, text="Back", command=download_window.destroy, font=("Forum", 10))
+        back_button.pack(pady=10)
+
+    def download_selected_assignment(self, assignment):
+        """
+        This function handles the downloading of the selected assignment.
+        """
+        # refer to folder assigments
+        data_dir = os.path.join(source_code_dir, 'assignments')
+
+        # Set subfolder to assignments
+        pdf_subfolder = os.path.join(data_dir)
+
+        # Construct the path to the assignment PDF file
+        pdf_file_path = os.path.join(pdf_subfolder, assignment)
+        
+        if not os.path.exists(pdf_file_path):
+            messagebox.showerror("Error", f"The assignment file '{assignment}' does not exist.")
+            return
+
+        # Ask the user where to save the downloaded file
+        save_location = filedialog.asksaveasfilename(
+            initialfile=assignment,
+            title="Save Assignment",
+            filetypes=[("PDF files", "*.pdf"), ("All files", "*.*")]
+        )
+
+        if save_location:
+            try:
+                # Copy the PDF file to the selected location
+                shutil.copy(pdf_file_path, save_location)
+                messagebox.showinfo("Download", f"Assignment '{assignment}' has been downloaded successfully.")
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to download the assignment: {e}")
+        else:
+            messagebox.showinfo("Cancelled", "Download cancelled.")
+            
     def load_assignments(self):
-        #shows assignments tasked to student
-        assignment= os.path.join(data_dir, "assignments.txt")
+        """
+        Load assignment filenames from the 'assignments' folder.
+        """
+        # redirect to subfolder assignments.
+        data_dir = os.path.join(source_code_dir, 'assignments')
+
+        # Define the path to the 'assignments' folder
+        assignments_folder = os.path.join(data_dir)
+        print("Assignments folder path:", assignments_folder)  # Debug line
         assignments = []
-        if os.path.exists(assignment):
-            with open(assignment, 'r') as f:
-                assignments = [line.strip() for line in f.readlines()]
+
+        # Check if the 'assignments' folder exists
+        if os.path.exists(assignments_folder):
+            # Iterate through the folder and collect filenames with .pdf extension
+            assignments = [f for f in os.listdir(assignments_folder) if f.endswith('.pdf')]
+            print("Loaded Assignments:", assignments)  # Debug line
         return assignments
 
     def load_submissions(self):

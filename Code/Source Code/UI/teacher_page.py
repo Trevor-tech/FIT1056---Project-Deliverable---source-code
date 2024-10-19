@@ -1,6 +1,5 @@
 import os
 import sys
-import csv
 # Get the absolute path of the current file
 current_file_path = os.path.abspath(__file__)
 
