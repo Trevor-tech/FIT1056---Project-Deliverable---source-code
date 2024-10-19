@@ -174,9 +174,10 @@ class StudentPage(tk.Tk):
         tree.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
 
         # Set the column headings
-        for column in columns:
-            tree.heading(column, text=column)
-            tree.column(column, anchor="center")
+        tree.heading('Assignment Name', text='Assignment Name')
+        tree.column('Assignment Name', anchor="center", width=400)
+        tree.heading('Download', text='Download')
+        tree.column('Download', anchor="center", width=100)
 
         # Add vertical scrollbar
         scrollbar = ttk.Scrollbar(tree_frame, orient=tk.VERTICAL, command=tree.yview)
@@ -189,32 +190,45 @@ class StudentPage(tk.Tk):
         # Insert rows in the Treeview for each assignment
         for idx, assignment in enumerate(assignments):
             # Insert the assignment name
-            tree.insert('', idx, iid=idx, values=(assignment, ''))
+            tree.insert('', tk.END, values=(assignment, 'Download'))
 
-            # Create a button and pack it into the frame
-            download_button = tk.Button(tree_frame, text="Download", command=lambda a=assignment: self.download_selected_assignment(a))
-            download_button.pack(side=tk.TOP, padx=5, pady=2)
+        # 
+        tree.bind('<ButtonRelease-1>', lambda event: self.download_selected_assignment(event, tree))
 
-        # Optionally, if you want to associate the button with the assignment
-        tree.item(idx, tags=(assignment,))
-
-        # Add a back button to close the window and return to the previous one
+        # Back button
         back_button = tk.Button(download_window, text="Back", command=download_window.destroy, font=("Forum", 10))
         back_button.pack(pady=10)
 
-    def download_selected_assignment(self, assignment):
+    def on_treeview_click(self, tree):
         """
-        This function handles the downloading of the selected assignment.
+        Handle the event when a row in the Treeview is double-clicked for downloading the assignment.
         """
-        # refer to folder assigments
-        data_dir = os.path.join(source_code_dir, 'assignments')
+        selected_item = tree.selection()
+        if selected_item:
+            item_values = tree.item(selected_item, 'values')
+            assignment = item_values[0]  # Get the assignment name
+
+            # Call the function to download the selected assignment
+            self.download_selected_assignment(assignment)
+
+    def download_selected_assignment(self, event, tree):
+        """
+        This function handles the downloading of the selected assignment using a single click.
+        """
+        # Get the selected item (assignment) from the Treeview
+        selected_item = tree.focus()
+        if not selected_item:
+            messagebox.showerror("Error", "No assignment selected.")
+            return
+
+        assignment = tree.item(selected_item)['values'][0]
 
         # Set subfolder to assignments
-        pdf_subfolder = os.path.join(data_dir)
+        pdf_subfolder = os.path.join(data_dir, 'assignments')
 
         # Construct the path to the assignment PDF file
         pdf_file_path = os.path.join(pdf_subfolder, assignment)
-        
+
         if not os.path.exists(pdf_file_path):
             messagebox.showerror("Error", f"The assignment file '{assignment}' does not exist.")
             return
@@ -240,11 +254,8 @@ class StudentPage(tk.Tk):
         """
         Load assignment filenames from the 'assignments' folder.
         """
-        # redirect to subfolder assignments.
-        data_dir = os.path.join(source_code_dir, 'assignments')
-
         # Define the path to the 'assignments' folder
-        assignments_folder = os.path.join(data_dir)
+        assignments_folder = os.path.join(data_dir, 'assignments')
         print("Assignments folder path:", assignments_folder)  # Debug line
         assignments = []
 
