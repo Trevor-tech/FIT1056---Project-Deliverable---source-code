@@ -47,19 +47,21 @@ class ReceptionistPage(tk.Frame):
 
         # A welcome label
         welcome_label = tk.Label(main_frame, text=f"Welcome, {self.receptionist_user.username}!", font=("Forum", 16))
-        welcome_label.pack(pady=20)
+        welcome_label.pack(padx=10, pady=10)
 
         # Add buttons for receptionist actions
         button_frame = tk.Frame(main_frame)
-        button_frame.pack(expand=True)
+        button_frame.pack(padx=10, pady=10)
 
-        tk.Button(button_frame, text="Manage Enrolments", command=self.show_manage_enrollments, font=("Forum", 10)).pack(pady=10)
-        tk.Button(button_frame, text="Schedule Appointments", command=self.schedule_appointments, font=("Forum", 10)).pack(pady=10)
-        tk.Button(button_frame, text="Generate Reports", command=self.generate_reports, font=("Forum", 10)).pack(pady=10)
+        # Create buttons with consistent width and use grid layout
+        button_width = 20
+        tk.Button(button_frame, text="Manage Enrolments", command=self.show_manage_enrollments, font=("Forum", 10), width=button_width).pack(padx=10, pady=10)
+        tk.Button(button_frame, text="Schedule Appointments", command=self.schedule_appointments, font=("Forum", 10), width=button_width).pack(padx=10, pady=10)
+        tk.Button(button_frame, text="Generate Reports", command=self.generate_reports, font=("Forum", 10), width=button_width).pack(padx=10, pady=10)
         
         # Logout button
-        logout_button = tk.Button(button_frame, text="Logout", command=self.logout, font=("Forum", 10))
-        logout_button.pack(pady=20)
+        logout_button = tk.Button(button_frame, text="Logout", command=self.logout, font=("Forum", 10), width=button_width)
+        logout_button.pack(padx=10, pady=10)
 
     def show_manage_enrollments(self):
         if self.manage_enrollments_page is None:
@@ -82,3 +84,4 @@ class ReceptionistPage(tk.Frame):
     def logout(self):
         self.master.destroy()  # Close the ReceptionistPage window
         self.home_page.show_home_page()  # Show the HomePage
+        self.home_page.remove_login_data() # Remove previous login

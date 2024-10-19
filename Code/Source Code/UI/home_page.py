@@ -20,7 +20,7 @@ from UI.student_page import StudentPage
 from UI.teacher_page import TeacherPage
 from UI.receptionist_page import ReceptionistPage
 
-class HomePage:
+class HomePage():
     """
     Home Page of the EmpowerU application.
     """
@@ -157,6 +157,12 @@ class HomePage:
         """
         self.root.quit()  # This will stop the mainloop
         self.root.destroy()  # This will destroy all windows
+    
+    def remove_login_data(self):
+        """Remove the username and password data from login fields
+        """
+        self.username_var.set("")
+        self.password_var.set("")
 
 if __name__ == "__main__":
     root = tk.Tk()
