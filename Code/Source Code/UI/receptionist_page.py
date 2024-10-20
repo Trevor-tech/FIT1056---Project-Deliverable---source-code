@@ -22,6 +22,7 @@ import UI.teacher_page
 import UI.receptionist_page
 from tkinter.messagebox import showinfo
 from UI.manage_enrollments import ManageEnrollmentsPage
+from UI.schedule_appointments import ScheduleAppointmentsPage
 
 class ReceptionistPage(tk.Frame):
     def __init__(self, master, home_page, receptionist_user):
@@ -32,6 +33,7 @@ class ReceptionistPage(tk.Frame):
         self.master.geometry("1000x1000")
 
         self.manage_enrollments_page = None  # Initialize to None
+        self.schedule_appointments_page = None  # Initialize to None
 
         self.create_widgets()
         self.pack(fill=tk.BOTH, expand=True)  # Make sure the frame fills the window
@@ -56,7 +58,7 @@ class ReceptionistPage(tk.Frame):
         # Create buttons with consistent width and use grid layout
         button_width = 20
         tk.Button(button_frame, text="Manage Enrolments", command=self.show_manage_enrollments, font=("Forum", 10), width=button_width).pack(padx=10, pady=10)
-        tk.Button(button_frame, text="Schedule Appointments", command=self.schedule_appointments, font=("Forum", 10), width=button_width).pack(padx=10, pady=10)
+        tk.Button(button_frame, text="Schedule Appointments", command=self.show_schedule_appointments, font=("Forum", 10), width=button_width).pack(padx=10, pady=10)
         tk.Button(button_frame, text="Generate Reports", command=self.generate_reports, font=("Forum", 10), width=button_width).pack(padx=10, pady=10)
         
         # Logout button
@@ -75,8 +77,11 @@ class ReceptionistPage(tk.Frame):
         self.pack()
         # We don't need to call create_widgets() here anymore
 
-    def schedule_appointments(self):
-        pass
+    def show_schedule_appointments(self):
+        if self.schedule_appointments_page is None:
+            self.schedule_appointments_page = ScheduleAppointmentsPage(self.master, self, self.receptionist_user)
+        self.pack_forget()
+        self.schedule_appointments_page.show()
 
     def generate_reports(self):
         pass

@@ -67,7 +67,7 @@ class Receptionist(Staff):
                 false otherwise
         """
         self.teachers = []
-        teachers_path = "./Data/teachers.txt"
+        teachers_path = "./data/teachers.txt"
         if os.path.exists(teachers_path):
             with open(teachers_path, "r", encoding="utf8") as rf:
                 lines = rf.readlines()
@@ -89,14 +89,14 @@ class Receptionist(Staff):
                 false otherwise
         """
         self.students = []
-        students_path = "./data/pst4_students.txt"
+        students_path = os.path.join(data_dir, 'students.txt')
         if os.path.exists(students_path):
             with open(students_path, "r", encoding="utf8") as rf:
                 lines = rf.readlines()
-                for line in lines:
-                    username, email, password, student_id = line.strip("\n").split(",")
-                    student_obj = Student(username, email, password, student_id)
-                    self.students.append(student_obj)
+            for line in lines:
+                username, password, unit_code, enrollment_date, unit_credit = [item.strip() for item in line.strip("\n").split(",")]
+                student_obj = Student(username, password, unit_code, enrollment_date, unit_credit)
+                self.students.append(student_obj)
         else:
             print(f"Please check the subdirectory and file exists for {students_path}.")
     
