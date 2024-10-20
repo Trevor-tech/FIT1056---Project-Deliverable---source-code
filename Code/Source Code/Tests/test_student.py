@@ -26,8 +26,8 @@ def test_file_path(test_data_dir):
     test_data_dir.mkdir(exist_ok=True)
     test_file = test_data_dir / "students.txt"
     with open(test_file, 'w', encoding='utf8') as f:
-        f.write("johndoe,john@example.com,password123,S001\n")
-        f.write("janedoe,jane@example.com,password456,S002\n")
+        f.write("johndoe,password123,UNIT001,2023-01-01,3\n")
+        f.write("janedoe,password456,UNIT002,2023-01-02,4\n")
     return test_file
 
 @pytest.fixture
@@ -50,8 +50,9 @@ def test_authenticate_success(student_class):
     student = student_class.authenticate("johndoe", "password123")
     assert student is not None
     assert student.username == "johndoe"
-    assert student.email == "john@example.com"
-    assert student.student_ID == "S001"
+    assert student.unit_code == "UNIT001"
+    assert student.enrollment_date == "2023-01-01"
+    assert student.unit_credit == "3"
 
 def test_authenticate_wrong_password(student_class):
     """
@@ -77,18 +78,19 @@ def test_student_creation():
     
     Ensures that a Student is correctly initialized with the given attributes.
     """
-    student = Student("testuser", "test@example.com", "testpass", "S003")
+    student = Student("testuser", "testpass", "UNIT003", "2023-01-03", "3")
     assert student.username == "testuser"
-    assert student.email == "test@example.com"
     assert student.password == "testpass"
-    assert student.student_ID == "S003"
+    assert student.unit_code == "UNIT003"
+    assert student.enrollment_date == "2023-01-03"
+    assert student.unit_credit == "3"
 
 def test_submit_assignment():
-    student = Student("testuser", "test@example.com", "testpass", "S003")
+    student = Student("testuser", "testpass", "UNIT003", "2023-01-03", "3")
     assert student.submit_assignment() is None
 
 def test_view_feedback():
-    student = Student("testuser", "test@example.com", "testpass", "S003")
+    student = Student("testuser", "testpass", "UNIT003", "2023-01-03", "3")
     assert student.view_feedback() is None
 
 def test_file_not_found(student_class, test_data_dir):

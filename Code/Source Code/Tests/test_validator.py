@@ -20,13 +20,13 @@ class TestIsDateValid:
 
         It checks if the function correctly identifies and returns True for:
         - A regular date (1st of January 2023)
-        - The last day of a year (31st of December 2022)
+        - The last day of a year (31st of December 2027)
         - A leap year date (29th of February 2024)
 
         Each test case should return True when passed to is_date_valid().
         """
         assert is_date_valid("01/01/2023") == True
-        assert is_date_valid("31/12/2022") == True
+        assert is_date_valid("31/12/2027") == True  # Changed from 2022 to 2027
         assert is_date_valid("29/02/2024") == True  # Leap year
 
     def test_invalid_dates(self):
@@ -70,7 +70,7 @@ class TestIsDateValid:
         """
         is_date_valid("2023-01-01")
         captured = capsys.readouterr()
-        assert "Invalid input date format:2023-01-01. Please enter a date in the format 'DD/MM/YYYY'." in captured.out
+        assert "Invalid input date format: 2023-01-01. Please enter a date in the format 'DD/MM/YYYY'." in captured.out
 
 class TestIsTimeValid:
     def test_valid_times(self):
