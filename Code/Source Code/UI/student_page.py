@@ -432,22 +432,41 @@ class StudentPage(tk.Tk):
     def check_grades(self):
         self.clear_window()
 
-        # Set up Treeview
-        columns = ['Assignment 1', 'Assignment 2', 'Assignment 3', 'Assignment 4', 'Test 1', 'Test 2', 'Average', 'Lessons Completed']
-        tree = ttk.Treeview(self, columns=columns, show='headings')
-        tree.pack(expand=True, fill=tk.BOTH)
+        # Create a frame
+        frame = tk.Frame(self)
+        frame.pack(expand=True, fill=tk.BOTH)
+
+        # Set up columns for displaying grades
+        columns = ['Assessment', 'Score(%)']
+
+        # Create a Treeview widget
+        tree = ttk.Treeview(frame, columns=columns, show='headings')
+        tree.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
 
         # Set the column headings
         for column in columns:
             tree.heading(column, text=column)
             tree.column(column, anchor="center")
 
-        # Read the grades file and display grades for the logged-in student
+        # Add a vertical scrollbar for the Treeview
+        scrollbar = ttk.Scrollbar(frame, orient=tk.VERTICAL, command=tree.yview)
+        tree.configure(yscroll=scrollbar.set)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Read the grades for the logged-in student
         student_data = self.get_student_data(self.student.username)
 
         if student_data:
-            # Insert the student's grades into the Treeview
-            tree.insert('', tk.END, values=student_data[2:])
+            # Define the assessments
+            assessments = [
+                'Assignment 1', 'Assignment 2', 'Assignment 3', 'Assignment 4',
+                'Test 1', 'Test 2', 'Average', 'Lessons Completed'
+            ]
+
+            # Insert rows into the Treeview with assessment names and corresponding grades
+            for idx, assessment in enumerate(assessments):
+                score = student_data[idx + 2]
+                tree.insert('', tk.END, values=(assessment, score))
         else:
             messagebox.showwarning("Error", "No data found for this student")
 
