@@ -1,5 +1,5 @@
 student, unit_code, assignment 1 (%), assignment 2 (%), assignment 3 (%), assignment 4 (%), test 1 (%), test 2 (%), average (%), lessons completed (%)
-student,1056, 0, 0, 0, 0, 0, 0, 0, 0
+student,1056, 0, 0, 0, 0, 0, 0, 0, 0,
 student2,1056, 0, 0, 0, 0, 0, 0, 0, 0
 student3,1056, 0, 0, 0, 0, 0, 0, 0, 0
 stundet4,1056, 0, 0, 0, 0, 0, 0, 0, 0

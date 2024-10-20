@@ -133,12 +133,183 @@ class TeacherPage(tk.Tk):
         download_button.pack(pady=20)
 
         # Upload button
-        grade_button = tk.Button(download_frame, text="Grade Student Assignment", command=self.grade_assignment, font=("Forum", 10))
+        grade_button = tk.Button(download_frame, text="Grade Student Assignment", command=self.grade, font=("Forum", 10))
         grade_button.pack(pady=20)
 
         # Back button
         back_button = tk.Button(download_frame, text="Back", command=download_window.destroy, font=("Forum", 10))
         back_button.pack(pady=10)
+
+    def grade(self):
+        """
+        Display the enrolled students for the teacher to grade.
+        Only students in the teacher's course are shown.
+        """
+        ### Displays student progress but this time, allowing teachers to select students and enter grade.
+        # Create a new window 
+        grade_window = tk.Toplevel(self)
+        grade_window.title(f'Grade Assignments')
+        grade_window.geometry("1000x600")
+
+        # Extract course ID from teacher's staff info
+        teacher_course_id = self.teacher.staff_info.split("-")[0].strip()
+        
+        # Filter student progress for the teacher's course by the course ID in students.txt
+        filtered_student_progress = [student for student in self.teacher.student_progress_details() if student[1].strip() == teacher_course_id]
+        
+        # Create Treeview frame
+        student_progress_frame = tk.Frame(self)
+        student_progress_frame.pack(pady=20)
+
+        # Table displaying students and their progress through the assignments.
+        self.tree = ttk.Treeview(grade_window, columns=('Student', 'Course ID', 'A1', 'A2', 'A3', 'A4', 'T1', 'T2', 'Average', 'Lessons Completed'), show="headings")
+        self.tree.heading('Student', text='Student Name')
+        self.tree.heading('Course ID', text='Course ID')
+        self.tree.heading('A1', text='A1 (%)')
+        self.tree.heading('A2', text='A2 (%)')
+        self.tree.heading('A3', text='A3 (%)')
+        self.tree.heading('A4', text='A4 (%)')
+        self.tree.heading('T1', text='T1 (%)')
+        self.tree.heading('T2', text='T2 (%)')
+        self.tree.heading('Average', text='Average Mark (%)')
+        self.tree.heading('Lessons Completed', text='Lessons Completed (%)')
+        
+        # Adjust column sizes
+        self.tree.column('Student', width=150)
+        self.tree.column('Course ID', width=150)
+        self.tree.column('A1', width=50)
+        self.tree.column('A2', width=50)
+        self.tree.column('A3', width=50)
+        self.tree.column('A4', width=50)
+        self.tree.column('T1', width=50)
+        self.tree.column('T2', width=50)
+        self.tree.column('Average', width=250)
+        self.tree.column('Lessons Completed', width=250)
+
+        # Insert rows
+        for row in filtered_student_progress:
+            self.tree.insert('', tk.END, values=row)
+
+        self.tree.pack(expand=True, fill=tk.BOTH)
+        
+        # Bind click event to select student and grade assignment
+        self.tree.bind("<ButtonRelease-1>", lambda event: self.on_student_click(event, self.tree, filtered_student_progress))
+
+        # Back button
+        back_button = tk.Button(grade_window, text="Back", command=grade_window.destroy, font=("Forum", 10))
+        back_button.pack(pady=10)
+
+    def on_student_click(self, event, tree, filtered_student_progress):
+        """
+        Handle the event when a student row is clicked.
+        Open a dialog to enter grades for assignments.
+        """
+        selected_item = tree.focus()  # Get the selected item
+        if not selected_item:
+            return
+
+        student_values = tree.item(selected_item, 'values')
+        student_name = student_values[0]  # Get the student's name
+        course_id = student_values[1]  # Get the course ID
+
+        # Create a popup to select assignment and enter grade
+        popup = tk.Toplevel(self)
+        popup.title(f"Grade Assignment for {student_name}")
+        popup.geometry("400x300")
+
+        # store value selected from dropdown
+        assignment_var = tk.StringVar(popup)
+        assignment_var.set("Assignment 1")  # Default value
+
+        #Dropdown box to select assignment
+        assignments = ["Assignment 1", "Assignment 2", "Assignment 3", "Assignment 4", "Test 1", "Test 2"]
+        tk.Label(popup, text="Select Assignment:").pack(pady=10)
+        assignment_menu = ttk.Combobox(popup, textvariable=assignment_var, values=assignments)
+        assignment_menu.pack(pady=10)
+
+        # Entry for entering grade
+        tk.Label(popup, text="Enter Grade (%):").pack(pady=10)
+        grade_entry = tk.Entry(popup)
+        grade_entry.pack(pady=10)
+
+        # Submit button to save the grade
+        submit_button = tk.Button(popup, text="Submit", command=lambda: self.submit_grade(student_name, course_id, assignment_var.get(), grade_entry.get(), popup))
+        submit_button.pack(pady=20)
+
+    def submit_grade(self, student_name, course_id, assignment, grade, popup):
+        """
+        Save the grade entered by the teacher for the selected assignment.
+        Update the student's progress in the 'student_progress.txt' file.
+        """
+        # Check if grade is a valid percentage
+        try:
+            grade = float(grade)
+            if grade < 0 or grade > 100:
+                raise ValueError
+        except ValueError:
+            messagebox.showerror("Invalid Input", "Please enter a valid percentage (0-100).")
+            return
+
+        # Map the assignment to the correct column in the file
+        assignment_map = {
+            "Assignment 1": 2,
+            "Assignment 2": 3,
+            "Assignment 3": 4,
+            "Assignment 4": 5,
+            "Test 1": 6,
+            "Test 2": 7
+        }
+        
+        # Construct the path to the data directory
+        data_dir = os.path.join(source_code_dir, 'data')
+        
+        # Set the path to the student_progress.txt file
+        student_progress_file = os.path.join(data_dir, 'student_progress.txt')
+        
+        # Locate the correct student in the 'student_progress.txt' file and update their grade
+        updated_data = []
+        with open(student_progress_file, "r") as file:
+            lines = file.readlines()
+            for line in lines:
+                data = line.strip().split(',')
+                if data[0] == student_name and data[1] == course_id:
+                    # Update the grade for the selected assignment
+                    data[assignment_map[assignment]] = str(grade)
+                    # Recalculate the average
+                    grades = list(map(float, data[2:8]))  # Get assignment and test grades
+                    data[8] = str(sum(grades) / len(grades))  # Update average
+                updated_data.append(','.join(data))
+
+        # Write the updated data back to the file
+        with open(student_progress_file, "w") as file:
+            file.write("\n".join(updated_data))
+
+        messagebox.showinfo("Success", f"Grade for {assignment} updated successfully!")
+
+        # Close the popup
+        popup.destroy()
+        
+        # Reload the Treeview to reflect updated grades
+        self.refresh_grade_treeview()
+    
+    def refresh_grade_treeview(self):
+        """
+        Update grades in the display of students when teacher selects grade students (so both student progress window and grade window reflect the same grades)
+        """
+        # Extract course ID from teacher's staff info
+        teacher_course_id = self.teacher.staff_info.split("-")[0].strip()
+
+        # Filter student progress for the teacher's course
+        filtered_student_progress = [student for student in self.teacher.student_progress_details() if student[1].strip() == teacher_course_id]
+
+        # Clear the current rows in the Treeview
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        # Insert updated rows
+        for row in filtered_student_progress:
+            self.tree.insert('', tk.END, values=row)
+
 
     def download_submission(self):
         """
