@@ -10,7 +10,7 @@ source_code_dir = os.path.dirname(os.path.dirname(current_file_path))
 sys.path.insert(0, source_code_dir)
 
 # Construct the path to the data directory
-data_dir = os.path.join(source_code_dir, 'assignments')
+data_dir = os.path.join(source_code_dir, 'data/assignments')
 
 # Set the path to the student_progress.txt file
 student_progress_file = os.path.join(data_dir, 'student_progress.txt')
