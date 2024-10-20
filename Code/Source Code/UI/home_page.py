@@ -5,12 +5,45 @@ import sys
 import os
 
 # Get the path to the 'Source Code' directory
-source_code_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+current_dir = os.path.dirname(os.path.abspath(__file__))
+source_code_dir = os.path.dirname(current_dir)
 sys.path.insert(0, source_code_dir)
+
+print(f"Current directory: {current_dir}")
+print(f"Source code directory: {source_code_dir}")
+print(f"Python path: {sys.path}")
+
+# Check if 'classes' directory exists
+classes_dir = os.path.join(source_code_dir, 'classes')
+if os.path.exists(classes_dir):
+    print(f"'classes' directory found: {classes_dir}")
+else:
+    print(f"'classes' directory not found at: {classes_dir}")
 
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+
+# Try importing custom modules and print any import errors
+custom_modules = [
+    'classes.user_class',
+    'classes.student_class',
+    'classes.teacher_class',
+    'classes.receptionist_class',
+    'classes.staff_class',
+    'UI.student_page',
+    'UI.teacher_page',
+    'UI.receptionist_page'
+]
+
+for module in custom_modules:
+    try:
+        __import__(module)
+        print(f"Successfully imported {module}")
+    except ImportError as e:
+        print(f"Error importing {module}: {e}")
+
+# If all imports are successful, import them for use
 from classes.user_class import User 
 from classes.student_class import Student
 from classes.teacher_class import Teacher
