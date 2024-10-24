@@ -298,23 +298,22 @@ class StudentPage(tk.Tk):
         download_window.title("Download Assignments")
         download_window.geometry("600x400")
 
-        
         # Set up columns for the Treeview
         columns = ['Assignment Name', 'Download']
-        
+    
         # Create the Treeview widget
         tree_frame = ttk.Frame(download_window)
         tree_frame.pack(expand=True, fill=tk.BOTH)
 
         tree = ttk.Treeview(tree_frame, columns=columns, show='headings')
         tree.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
-        
-        # Set headers of colummns
+    
+        # Set headers of columns
         tree.heading('Assignment Name', text='Assignment Name')
         tree.column('Assignment Name', anchor="center", width=400)
         tree.heading('Download', text='Download')
         tree.column('Download', anchor="center", width=100)
-        
+    
         # Add vertical scrollbar
         scrollbar = ttk.Scrollbar(tree_frame, orient=tk.VERTICAL, command=tree.yview)
         tree.configure(yscroll=scrollbar.set)
@@ -322,9 +321,9 @@ class StudentPage(tk.Tk):
 
         # Load assignment files from the 'assignments' folder
         assignments = self.load_assignments()         
-        
+    
         # Insert rows in the Treeview for each assignment
-        for assignment in enumerate(assignments):
+        for assignment in assignments:  # Remove enumerate here
             # Insert the assignment name
             tree.insert('', tk.END, values=(assignment, 'Download'))
 
@@ -351,23 +350,20 @@ class StudentPage(tk.Tk):
         """
         This function handles the downloading of the selected assignment using a single click.
         """
-        # Get the selected assignment from the Treeview
         selected_item = tree.focus()
         if not selected_item:
             messagebox.showerror("Error", "No assignment selected.")
             return
 
         assignment = tree.item(selected_item)['values'][0]
+        print(f"Selected assignment: {assignment}")  # Debug line
 
-        # Set subfolder to assignments
-        pdf_subfolder = os.path.join(data_dir, 'assignments')
+        # Construct the full path to the PDF file
+        pdf_file_path = os.path.join(data_dir, 'assignments', assignment)
+        print(f"Attempting to access file: {pdf_file_path}")  # Debug line
 
-        # Construct the path to the assignment PDF file
-        pdf_file_path = os.path.join(pdf_subfolder, assignment)
-
-        # When file path does not exist.
         if not os.path.exists(pdf_file_path):
-            messagebox.showerror("Error", f"The assignment file '{assignment}' does not exist.")
+            messagebox.showerror("Error", f"The assignment file '{assignment}' does not exist at {pdf_file_path}")
             return
 
         # Ask the user where to save the downloaded file
@@ -392,16 +388,15 @@ class StudentPage(tk.Tk):
         """
         Load assignment filenames from the 'assignments' folder.
         """
-        # Define the path to the 'assignments' folder
         assignments_folder = os.path.join(data_dir, 'assignments')
-        print("Assignments folder path:", assignments_folder)  # Debug line
+        print(f"Assignments folder path: {assignments_folder}")  # Debug line
         assignments = []
 
-        # Check if the 'assignments' folder exists
         if os.path.exists(assignments_folder):
-            # Iterate through the folder and collect filenames with .pdf extension
             assignments = [f for f in os.listdir(assignments_folder) if f.endswith('.pdf')]
-            print("Loaded Assignments:", assignments)  # Debug line
+            print(f"Loaded Assignments: {assignments}")  # Debug line
+        else:
+            print(f"Assignments folder does not exist: {assignments_folder}")
         return assignments
 
     def load_submissions(self):
